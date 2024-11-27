@@ -36,7 +36,6 @@ public class Usuarios extends javax.swing.JFrame {
         nombrelbl = new javax.swing.JLabel();
         apellidoslbl = new javax.swing.JLabel();
         emaillbl = new javax.swing.JLabel();
-        txtpassword = new javax.swing.JTextField();
         txtnombre = new javax.swing.JTextField();
         txtapellidos = new javax.swing.JTextField();
         etqEstado = new javax.swing.JTextField();
@@ -47,6 +46,7 @@ public class Usuarios extends javax.swing.JFrame {
         guardarbt = new javax.swing.JButton();
         limpiarbt = new javax.swing.JButton();
         salirbt = new javax.swing.JButton();
+        txtpassword = new javax.swing.JPasswordField();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -77,23 +77,17 @@ public class Usuarios extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(137, 137, 137))
+                .addGap(140, 140, 140))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(22, 22, 22))
+                .addGap(26, 26, 26))
         );
 
         loginlbl.setText("Login");
-
-        txtlogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtloginActionPerformed(evt);
-            }
-        });
 
         passwordlbl.setText("Password");
 
@@ -102,13 +96,6 @@ public class Usuarios extends javax.swing.JFrame {
         apellidoslbl.setText("Apellidos");
 
         emaillbl.setText("Email");
-
-        txtpassword.setPreferredSize(new java.awt.Dimension(62, 22));
-        txtpassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtpasswordActionPerformed(evt);
-            }
-        });
 
         etqEstado.setEditable(false);
 
@@ -160,45 +147,44 @@ public class Usuarios extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(accesolbl)
                         .addGap(32, 32, 32)
-                        .addComponent(normalbt))
+                        .addComponent(normalbt)
+                        .addGap(36, 36, 36)
+                        .addComponent(adminbt))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(guardarbt)
+                        .addGap(26, 26, 26)
+                        .addComponent(limpiarbt)
+                        .addGap(31, 31, 31)
+                        .addComponent(salirbt))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(nombrelbl)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(passwordlbl)
+                                .addComponent(loginlbl))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtlogin, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                                .addComponent(txtpassword))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(guardarbt)
-                                .addGap(26, 26, 26)
-                                .addComponent(limpiarbt))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(apellidoslbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(emaillbl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(apellidoslbl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(nombrelbl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(passwordlbl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(loginlbl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtlogin, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(20, 20, 20)
-                        .addComponent(salirbt)))
+                                .addGap(26, 26, 26)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtemail, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                            .addComponent(txtapellidos))))
                 .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(adminbt)
-                        .addGap(46, 46, 46))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(etqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))))
+                .addComponent(etqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,15 +192,15 @@ public class Usuarios extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(etqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginlbl)
-                    .addComponent(txtlogin, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtlogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(passwordlbl)
-                    .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nombrelbl)
                     .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -323,94 +309,6 @@ public class Usuarios extends javax.swing.JFrame {
         }                      
     }//GEN-LAST:event_guardarbtActionPerformed
 
-    private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
-        String login_u = txtlogin.getText();
-        String pass_u = txtpassword.getText();
-        boolean encontrado = false;
-       /* txtnombre.setEditable(true);
-        txtapellidos.setEditable(true);
-        txtemail.setEditable(true);
-        guardarbt.setEnabled(true);*/
-        Scanner s;
-        
-        try {
-            File f = new File("D:\\DB\\Usuario.txt");
-            if(!f.exists()){
-                f.createNewFile();
-                etqEstado.setText("Creando"); 
-            } else {
-                s = new Scanner(f);
-                while(s.hasNextLine() && !encontrado){
-                    String lineaActual = s.nextLine();
-                    Scanner s1 = new Scanner(lineaActual);
-                    
-                    s1.useDelimiter("\\s*;\\s*");
-                    
-                    try {
-                        String auxlogin = s1.next();
-                        String auxPass = s1.next();
-                        if(login_u.equals(auxlogin) && pass_u.equals(auxPass)){
-                            
-                           
-                          
-                            Nivel = Integer.parseInt(s1.next());
-                            if (Nivel == 0) {
-                                adminbt.setSelected(true);
-                            } else {
-                                normalbt.setSelected(true);
-                            }
-                            
-                            txtnombre.setText(s1.next());
-                            txtapellidos.setText(s1.next());
-                            txtemail.setText(s1.next());
-                         
-  
-                            Lantigua = login_u+";"+pass_u+";"+Nivel+";"+txtnombre.getText()+";"+txtapellidos.getText()+";"+txtemail.getText();
-                            Modificar = true;
-                            etqEstado.setText("Modificando");
-                            encontrado = true;
-                        } else {
-                            if(login_u.equals(auxlogin)){
-                                limpiarbtActionPerformed(evt);
-                                txtlogin.setText(login_u);
-                                JOptionPane.showMessageDialog(rootPane,"Contraseña incorrecta intente nuevamente");
-                                return;
-                            }
-                            
-                            txtnombre.setText("");
-                            txtapellidos.setText("");
-                            txtemail.setText("");
-                            //buttonGroup1.clearSelection();
-                            Modificar = false;
-                            etqEstado.setText("Creando");
-                            encontrado = false;
-                            
-                        }
-                        
-                    } catch (Exception e) {
-                        JOptionPane.showMessageDialog(this, "Error al leer el archivo", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                txtnombre.grabFocus();
-                s.close();
-            }
-            
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(this, "No se encontró el archivo", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException ex) {
-            System.out.println("Error: "+ex);
-        }
-    }//GEN-LAST:event_txtpasswordActionPerformed
-
-    private void txtloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtloginActionPerformed
-        if(txtlogin.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this,"Debe ingresar el Usuario para continuar");
-        } else {
-            txtpassword.setText("");
-            txtpassword.grabFocus();
-        }
-    }//GEN-LAST:event_txtloginActionPerformed
-
     private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {                                     
     if(evt.getKeyCode()== KeyEvent.VK_ENTER){
         txtapellidos.grabFocus();
@@ -499,6 +397,6 @@ public class Usuarios extends javax.swing.JFrame {
     private javax.swing.JTextField txtemail;
     private javax.swing.JTextField txtlogin;
     private javax.swing.JTextField txtnombre;
-    private javax.swing.JTextField txtpassword;
+    private javax.swing.JPasswordField txtpassword;
     // End of variables declaration//GEN-END:variables
 }
