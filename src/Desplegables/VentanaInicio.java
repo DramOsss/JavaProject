@@ -4,6 +4,11 @@
  */
 package Desplegables;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author DELL
@@ -15,6 +20,13 @@ public class VentanaInicio extends javax.swing.JFrame {
      */
     public VentanaInicio() {
         initComponents();
+        int Nivel = obtenerNivelUsuario();  // Llamada al método que obtiene el nivel
+
+        // Condicional para cambiar la visibilidad de los menús
+        if (Nivel == 0) {
+            jMenu1.setVisible(false); // Ocultar jMenu1
+            jMenu11.setVisible(false); // Ocultar jMenu11
+        }
     }
 
     /**
@@ -215,6 +227,39 @@ public class VentanaInicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    private int obtenerNivelUsuario() {
+       int nivel = -1;  // Valor predeterminado en caso de que no se encuentre el nivel
+//        try {
+//            File archivo = new File("C:\\Users\\admin\\Desktop\\Usuario.txt");
+//            Scanner scanner = new Scanner(archivo);
+//
+//            // Leer línea por línea
+//            while (scanner.hasNextLine()) {
+//                String linea = scanner.nextLine();
+//                Scanner lineaScanner = new Scanner(linea);
+//                lineaScanner.useDelimiter("\\s*;\\s*");  // Delimitador por ";"
+//
+//                // Leer los valores de la línea (suponiendo el formato: usuario;contraseña;nivel;nombre;apellido)
+//                String log = lineaScanner.next();
+//                String pass = lineaScanner.next();
+//                String nivelStr = lineaScanner.next(); // Tercer valor, el nivel (0 o 1)
+//
+//                // Verificar si el usuario y la contraseña coinciden
+//                if (log.equals(txtusuario.getText()) && pass.equals(txtpassword.getText())) {
+//                    nivel = Integer.parseInt(nivelStr);  // Guardar el nivel (0 o 1)
+//                    break;  // Salir del bucle una vez encontrado el usuario y el nivel
+//                }
+//            }
+//            scanner.close();
+//        } catch (FileNotFoundException e) {
+//            JOptionPane.showMessageDialog(null, "Archivo no encontrado: " + e.getMessage());
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+//        }
+     return nivel;  // Retorna el nivel (0 o 1)
+    }
+    
     private void itmUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmUsuarioActionPerformed
         Usuarios us = new Usuarios();
         us.setVisible(true);
