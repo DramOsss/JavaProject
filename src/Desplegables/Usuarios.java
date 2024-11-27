@@ -1,4 +1,3 @@
-
 package Desplegables;
 import ManejoArchivos.Archivos;
 import java.awt.event.KeyEvent;
@@ -20,6 +19,7 @@ public class Usuarios extends javax.swing.JFrame {
     public int Nivel = 0;
     public String nivel= "";
     public int v;
+//    etqEstado == 0 ? etqEstado.setText("Comun") : etqEstado.setText("Administrador") ;
 
     
     @SuppressWarnings("unchecked")
@@ -98,25 +98,36 @@ public class Usuarios extends javax.swing.JFrame {
 
         emaillbl.setText("Email");
 
-        etqEstado.setEditable(false);
-        etqEstado.setEnabled(false);
-        etqEstado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                etqEstadoActionPerformed(evt);
+        txtnombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtnombreKeyPressed(evt);
             }
         });
+
+        txtapellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtapellidosKeyPressed(evt);
+            }
+        });
+
+        etqEstado.setEditable(false);
+        etqEstado.setEnabled(false);
 
         accesolbl.setText("Nivel de Acceso");
 
-        txtemail.addActionListener(new java.awt.event.ActionListener() {
+        normalbt.setText("Normal");
+        normalbt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtemailActionPerformed(evt);
+                normalbtActionPerformed(evt);
             }
         });
 
-        normalbt.setText("Normal");
-
         adminbt.setText("Administrador");
+        adminbt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adminbtActionPerformed(evt);
+            }
+        });
 
         guardarbt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-guardar-32.png"))); // NOI18N
         guardarbt.setText("Guardar");
@@ -261,103 +272,94 @@ public class Usuarios extends javax.swing.JFrame {
         txtnombre.setText("");
         txtapellidos.setText("");
         txtemail.setText("");
-        etqEstado.setText("");
+        adminbt.setSelected(false);
+        normalbt.setSelected(false);
     }//GEN-LAST:event_limpiarbtActionPerformed
 
     private void guardarbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarbtActionPerformed
-      Archivos ar = new Archivos();
-        File nwa = new File("D:\\DB\\Usuario.txt");
-        boolean validar = true;
-        String usuario, login, pass, nombre, apellido,email;
-        //do{
-            if(txtlogin.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "El campo de login no debe estar vacio");
-                validar=false;
-                txtlogin.grabFocus();
-            }else if(txtpassword.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "El campo de password no debe estar vacio");
-                validar=false;
-                txtpassword.grabFocus();
-            }else if(txtnombre.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "El nombre nombre no debe estar vacio");
-                validar=false;
-                txtnombre.grabFocus();
-            }else if(txtapellidos.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "Los apellidos no deben estar vacios");
-                validar=false;
-                txtapellidos.grabFocus();
-            }else if(txtemail.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "El Email no deben estar vacios");
-                validar=false;
-                txtemail.grabFocus();
-            }else if(v==0){
-               validar=false;
-               JOptionPane.showMessageDialog(null, "El email no es valido");
-               txtemail.grabFocus();
-            }
-        //}while(validar!=true);
+     if (validarCampos()) {
+        Archivos archivos = new Archivos();
+        File file = new File("C:\\Users\\admin\\\\Desktop\\Usuario.txt");
         
-        login=txtlogin.getText();
-        pass=txtpassword.getText();
-        nombre=txtnombre.getText();
-        apellido=txtapellidos.getText();
-        email=txtemail.getText();
-        if(adminbt.isSelected()){
-            nivel="0";
-        }else if(normalbt.isSelected()){
-            nivel="1";
+        // Recoger los valores de los campos
+        String login = txtlogin.getText();
+        String pass = txtpassword.getText();
+        String nombre = txtnombre.getText();
+        String apellido = txtapellidos.getText();
+        String email = txtemail.getText();
+        String nivel = adminbt.isSelected() ? "0" : "1"; // Establecer nivel según el botón seleccionado
+        String usuario = login + ";" + pass + ";" + nivel + ";" + nombre + ";" + apellido + ";" + email;
+        
+        // Si se está modificando un usuario
+        if (Modificar) {
+            archivos.ModificarArchivo(Lantigua, usuario, file);
+            JOptionPane.showMessageDialog(null, "Modificado exitosamente");
+        } else {
+            archivos.Guardar(usuario, file);
+            JOptionPane.showMessageDialog(null, "Guardado exitosamente");
         }
-        usuario= login+";"+pass+";"+nivel+";"+nombre+";"+apellido+";"+email;
-        if(validar){
-          if(Modificar){
-            ar.ModificarArchivo(Lantigua,usuario, nwa);
-            JOptionPane.showMessageDialog(null,"Modificado exitosamente");
-            limpiarbtActionPerformed(evt);
-            }else{
-            ar.Guardar(usuario, nwa);
-            JOptionPane.showMessageDialog(null,"Guardado exitosamente");
-            limpiarbtActionPerformed(evt);
-            }  
-        }                      
+        
+        // Limpiar los campos después de la acción
+        limpiarbtActionPerformed(evt);
+     }
     }//GEN-LAST:event_guardarbtActionPerformed
-
-    private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {                                     
-    if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-        txtapellidos.grabFocus();
+                                  
+    private boolean validarCampos() {
+        if (txtlogin.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo de login no debe estar vacío");
+            txtlogin.grabFocus();
+            return false;
+        } else if (txtpassword.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo de password no debe estar vacío");
+            txtpassword.grabFocus();
+            return false;
+        } else if (txtnombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El nombre no debe estar vacío");
+            txtnombre.grabFocus();
+            return false;
+        } else if (txtapellidos.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Los apellidos no deben estar vacíos");
+            txtapellidos.grabFocus();
+            return false;
+        } else if (txtemail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El Email no debe estar vacío");
+            txtemail.grabFocus();
+            return false;
+        } else if (!esEmailValido(txtemail.getText())) { // Asumir que v es una variable que valida el email
+            JOptionPane.showMessageDialog(null, "El email no es válido");
+            txtemail.grabFocus();
+            return false;
+        }
+        return true;
     }
-    }                                    
 
-    private void txtapellidosKeyPressed(java.awt.event.KeyEvent evt) {                                        
-     if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-        txtemail.grabFocus();
+    private boolean esEmailValido(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(emailRegex);
     }
-    }                                       
 
-    private void txtemailKeyTyped(java.awt.event.KeyEvent evt) {                                  
-        String correo = txtemail.getText();
-                String regex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(correo);
 
-                if (matcher.matches()) {
-                    jLabel1.setText("Correo electrónico válido");                    
-                    v=1;
-                } else {
-                    jLabel1.setText("Correo electrónico no válido");                    
-                    v=0;
-                } 
-                if(txtemail.getText().isEmpty()){
-                    jLabel1.setText("");
-                }
-    }                                 
+    private void normalbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalbtActionPerformed
+        normalbt.setSelected(true);  
+        adminbt.setSelected(false);
+    }//GEN-LAST:event_normalbtActionPerformed
 
-    private void txtemailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtemailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtemailActionPerformed
+    private void adminbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminbtActionPerformed
+        normalbt.setSelected(false);  
+        adminbt.setSelected(true);
+    }//GEN-LAST:event_adminbtActionPerformed
 
-    private void etqEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_etqEstadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_etqEstadoActionPerformed
+    private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyPressed
+         if(evt.getKeyCode()== KeyEvent.VK_ENTER){
+            txtapellidos.grabFocus();
+        }
+    }//GEN-LAST:event_txtnombreKeyPressed
+
+    private void txtapellidosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtapellidosKeyPressed
+       if(evt.getKeyCode()== KeyEvent.VK_ENTER){
+            txtemail.grabFocus();
+       }
+    }//GEN-LAST:event_txtapellidosKeyPressed
 
     
     public static void main(String args[]) {

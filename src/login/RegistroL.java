@@ -147,9 +147,9 @@ public class RegistroL extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void IniciarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarbtnActionPerformed
-       String usuario = txtusuario.getText();
+          String usuario = txtusuario.getText();
         String password = txtpassword.getText();
-                
+
         if(usuario.isEmpty() && password.isEmpty()){
             JOptionPane.showMessageDialog(null, "Debe ingresar el usuario y la contraseña");
         }
@@ -159,74 +159,79 @@ public class RegistroL extends javax.swing.JFrame {
         else if(password.isEmpty()){
             JOptionPane.showMessageDialog(null, "Debe ingresar la contraseña");
         }
+
         boolean encontrado = false;
-                
+
         try {
-            File f = new File("D:\\DB\\Usuario.txt");
+            // Obtener la ruta dinámica del escritorio
+            String escritorio = System.getProperty("user.home") + "\\Desktop";
+            File f = new File(escritorio, "Usuario.txt");
+
+            // Verificar si el archivo existe
             if(!f.exists()){
                 f.createNewFile();
-            }
-            else {
-                Scanner a = new Scanner(f);
-                while(a.hasNextLine() && !encontrado){
-                    String linea = a.nextLine();
-                    Scanner a1 = new Scanner(linea);
-                    
-                    a1.useDelimiter("\\s*;\\s*");
-                    
-                    String Log = a1.next();
-                    String Pass = a1.next();
-                    
-                    if(Log.equals(txtusuario.getText()) && Pass.equals(txtpassword.getText())){
-                     lvl=Integer.parseInt(a1.next());
-                     String name = a1.next();
-                     VentanaInicio ve = new VentanaInicio();
-                        if(lvl==1){
-                           // ve.menProcesos.setEnabled(false);
-                            //ve.itmUsuario.setEnabled(false);
-                           // ve.lblLetrero.setText("Status:Normal");
-                        }
-                      //  ve.lblLetrero.setText("Status: Administrador");
-                      //  ve.jLabel1.setText("User: " +name);
-                        int validar=lvl;
-                     //   ve.Dato(validar);
-                        ve.setVisible(true);
-                        encontrado = true;
-                        this.dispose();
-                    
-                    }else{
-                        encontrado = false;
-                        if(Log.equals(txtusuario.getText())){
-                            JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
-                            txtpassword.setText("");
-                            return;
-                        }
-                        else if(!a.hasNextLine()){
-                            JOptionPane.showMessageDialog(null, "Uusario no encontrado");
-                            txtusuario.setText("");
-                            txtpassword.setText("");
+            } else {
+                try (Scanner a = new Scanner(f)) {
+                    while(a.hasNextLine() && !encontrado){
+                        String linea = a.nextLine();
+                        Scanner a1 = new Scanner(linea);
+                        a1.useDelimiter("\\s*;\\s*");
+
+                        String Log = a1.next();
+                        String Pass = a1.next();
+
+                        if(Log.equalsIgnoreCase(usuario) && Pass.equals(password)){
+                            int lvl = Integer.parseInt(a1.next());
+                            String name = a1.next();
+
+                            // Lógica para ventana de inicio según el nivel de usuario
+                            VentanaInicio ve = new VentanaInicio();
+                            if(lvl == 1){
+                                // Opciones específicas para nivel 1 (usuario normal)
+                            } else {
+                                // Opciones para administrador
+                            }
+                            ve.setVisible(true);
+                            encontrado = true;
+                            this.dispose();
+                        } else {
+                            if(Log.equalsIgnoreCase(usuario)){
+                                JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
+                                txtpassword.setText("");
+                                return;
+                            }
                         }
                     }
+                    if (!encontrado) {
+                        JOptionPane.showMessageDialog(null, "Usuario no encontrado");
+                        txtusuario.setText("");
+                        txtpassword.setText("");
+                    }
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + ex.getMessage());
                 }
-                a.close();
             }
         }
         catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, "Error al acceder al archivo: " + ex.getMessage());
         }
-        
     }                                          
 
     private void windowadmin(java.awt.event.WindowEvent evt) {                             
-        Archivos ar = new Archivos();
-        File archivosDBase = new File("D:\\DB");
+       Archivos ar = new Archivos();
+        // Obtener la ruta dinámica del escritorio
+        String escritorio = System.getProperty("user.home") + "\\Desktop";
+        File archivosDBase = new File(escritorio, "Usuario.txt");
+
         if(!archivosDBase.exists()){
-            archivosDBase.mkdir();
-            
-            String Administrador = "Admin;4321;0;Admin;Admin;Provisional;admin@gmail.com";
-            File uf = new File("D:\\DB\\Usuario.txt");
-            ar.Guardar(Administrador, uf);
-       }                            
+            try {
+                archivosDBase.createNewFile();  // Crear el archivo si no existe
+                String Administrador = "Admin;4321;0;Admin;Admin;Provisional;admin@gmail.com";
+                ar.Guardar(Administrador, archivosDBase);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error al crear archivo: " + e.getMessage());
+            }
+        }                        
     }//GEN-LAST:event_IniciarbtnActionPerformed
 
     private void txtusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusuarioActionPerformed
