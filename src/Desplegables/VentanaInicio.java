@@ -24,8 +24,8 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         // Condicional para cambiar la visibilidad de los menús
         if (Nivel == 0) {
-            jMenu1.setVisible(false); // Ocultar jMenu1
-            jMenu11.setVisible(false); // Ocultar jMenu11
+            menMantenimiento.setVisible(false); // Ocultar jMenu1
+            menProcesos.setVisible(false); // Ocultar jMenu11
         }
     }
 
@@ -55,12 +55,12 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        menMantenimiento = new javax.swing.JMenu();
         itmUsuario = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu11 = new javax.swing.JMenu();
+        menProcesos = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu12 = new javax.swing.JMenu();
@@ -131,8 +131,8 @@ public class VentanaInicio extends javax.swing.JFrame {
         jMenuBar1.setBackground(new java.awt.Color(37, 109, 123));
         jMenuBar1.setPreferredSize(new java.awt.Dimension(171, 40));
 
-        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-mantenimiento-32.png"))); // NOI18N
-        jMenu1.setText("Mantenimientos");
+        menMantenimiento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-mantenimiento-32.png"))); // NOI18N
+        menMantenimiento.setText("Mantenimientos");
 
         itmUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-grupo-de-usuario-32.png"))); // NOI18N
         itmUsuario.setText("Usuarios");
@@ -141,13 +141,13 @@ public class VentanaInicio extends javax.swing.JFrame {
                 itmUsuarioActionPerformed(evt);
             }
         });
-        jMenu1.add(itmUsuario);
+        menMantenimiento.add(itmUsuario);
 
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-catalogo-externo-inmobiliario-esquema-bartama-esquema-64-bartama-grafico-32.png"))); // NOI18N
         jMenuItem6.setText("Catalogo de cuenta");
-        jMenu1.add(jMenuItem6);
+        menMantenimiento.add(jMenuItem6);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(menMantenimiento);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-negocio-32.png"))); // NOI18N
         jMenu2.setText("Movimiento");
@@ -158,18 +158,19 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-administración-de-explotación-comercial-32.png"))); // NOI18N
-        jMenu11.setText("Procesos");
+        menProcesos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-administración-de-explotación-comercial-32.png"))); // NOI18N
+        menProcesos.setText("Procesos");
 
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-diario-32.png"))); // NOI18N
         jMenuItem4.setText("Cierre Diario por Fechas");
-        jMenu11.add(jMenuItem4);
+        menProcesos.add(jMenuItem4);
 
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-fiscal-32.png"))); // NOI18N
         jMenuItem5.setText("Cierre de fin de año fiscal");
-        jMenu11.add(jMenuItem5);
+        menProcesos.add(jMenuItem5);
 
-        jMenuBar1.add(jMenu11);
+        jMenuBar1.add(menProcesos);
+        menProcesos.getAccessibleContext().setAccessibleDescription("");
 
         jMenu12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-encuentra-hombre-usuario-32.png"))); // NOI18N
         jMenu12.setText("Consultas");
@@ -306,9 +307,7 @@ public class VentanaInicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem itmUsuario;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
-    private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -338,5 +337,7 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    public javax.swing.JMenu menMantenimiento;
+    public javax.swing.JMenu menProcesos;
     // End of variables declaration//GEN-END:variables
 }

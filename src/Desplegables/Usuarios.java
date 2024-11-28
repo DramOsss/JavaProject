@@ -19,7 +19,7 @@ public class Usuarios extends javax.swing.JFrame {
     public int Nivel = 0;
     public String nivel= "";
     public int v;
-//    etqEstado == 0 ? etqEstado.setText("Comun") : etqEstado.setText("Administrador") ;
+    private boolean mostrarContrasena = false;
 
     
     @SuppressWarnings("unchecked")
@@ -38,16 +38,17 @@ public class Usuarios extends javax.swing.JFrame {
         emaillbl = new javax.swing.JLabel();
         txtnombre = new javax.swing.JTextField();
         txtapellidos = new javax.swing.JTextField();
-        etqEstado = new javax.swing.JTextField();
-        accesolbl = new javax.swing.JLabel();
         txtemail = new javax.swing.JTextField();
-        normalbt = new javax.swing.JRadioButton();
-        adminbt = new javax.swing.JRadioButton();
         guardarbt = new javax.swing.JButton();
         limpiarbt = new javax.swing.JButton();
         salirbt = new javax.swing.JButton();
         txtpassword = new javax.swing.JPasswordField();
-        jLabel2 = new javax.swing.JLabel();
+        accesolbl1 = new javax.swing.JLabel();
+        comboBox = new javax.swing.JComboBox<>();
+        passwordlbl1 = new javax.swing.JLabel();
+        txtpassword1 = new javax.swing.JPasswordField();
+        seeButton1 = new javax.swing.JButton();
+        seeButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -110,25 +111,6 @@ public class Usuarios extends javax.swing.JFrame {
             }
         });
 
-        etqEstado.setEditable(false);
-        etqEstado.setEnabled(false);
-
-        accesolbl.setText("Nivel de Acceso");
-
-        normalbt.setText("Normal");
-        normalbt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                normalbtActionPerformed(evt);
-            }
-        });
-
-        adminbt.setText("Administrador");
-        adminbt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminbtActionPerformed(evt);
-            }
-        });
-
         guardarbt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-guardar-32.png"))); // NOI18N
         guardarbt.setText("Guardar");
         guardarbt.addActionListener(new java.awt.event.ActionListener() {
@@ -153,7 +135,27 @@ public class Usuarios extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Estado");
+        accesolbl1.setText("Nivel de Acceso");
+
+        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Administrador" }));
+
+        passwordlbl1.setText("Connfirm Password");
+
+        seeButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-visible-24.png"))); // NOI18N
+        seeButton1.setToolTipText("");
+        seeButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seeButton1ActionPerformed(evt);
+            }
+        });
+
+        seeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-visible-24.png"))); // NOI18N
+        seeButton.setToolTipText("");
+        seeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -162,25 +164,36 @@ public class Usuarios extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(accesolbl1)
+                        .addGap(26, 26, 26)
+                        .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(guardarbt)
+                        .addGap(26, 26, 26)
+                        .addComponent(limpiarbt)
+                        .addGap(31, 31, 31)
+                        .addComponent(salirbt))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(apellidoslbl)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(emaillbl)
+                                .addGap(26, 26, 26)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtemail, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                            .addComponent(txtapellidos)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(passwordlbl1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(etqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(18, 18, 18)
-                            .addComponent(accesolbl)
-                            .addGap(32, 32, 32)
-                            .addComponent(normalbt)
-                            .addGap(36, 36, 36)
-                            .addComponent(adminbt))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(guardarbt)
-                            .addGap(26, 26, 26)
-                            .addComponent(limpiarbt)
-                            .addGap(31, 31, 31)
-                            .addComponent(salirbt))
+                        .addComponent(txtpassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(seeButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(nombrelbl)
@@ -194,36 +207,30 @@ public class Usuarios extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtlogin, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                                     .addComponent(txtpassword))))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(apellidoslbl)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(emaillbl)
-                                    .addGap(26, 26, 26)))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtemail, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                                .addComponent(txtapellidos)))))
-                .addContainerGap(36, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(seeButton)))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(etqEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginlbl)
                     .addComponent(txtlogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(passwordlbl))
+                    .addComponent(seeButton))
+                .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordlbl))
-                .addGap(21, 21, 21)
+                    .addComponent(txtpassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(passwordlbl1)
+                    .addComponent(seeButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nombrelbl)
                     .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -235,11 +242,10 @@ public class Usuarios extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(emaillbl)
                     .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(accesolbl)
-                    .addComponent(normalbt)
-                    .addComponent(adminbt))
+                    .addComponent(accesolbl1)
+                    .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardarbt)
@@ -266,31 +272,47 @@ public class Usuarios extends javax.swing.JFrame {
          this.dispose();
     }//GEN-LAST:event_salirbtActionPerformed
 
+     private boolean esEmailValido(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(emailRegex);
+    }
+
+     
     private void limpiarbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarbtActionPerformed
         txtlogin.setText("");
         txtpassword.setText("");
+        txtpassword1.setText("");
         txtnombre.setText("");
         txtapellidos.setText("");
         txtemail.setText("");
-        adminbt.setSelected(false);
-        normalbt.setSelected(false);
     }//GEN-LAST:event_limpiarbtActionPerformed
 
     private void guardarbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarbtActionPerformed
      if (validarCampos()) {
         Archivos archivos = new Archivos();
         File file = new File("C:\\Users\\admin\\\\Desktop\\Usuario.txt");
-        
+        String usuario, login, pass, pass1, nombre, apellido,email,comboGuardado;
         // Recoger los valores de los campos
-        String login = txtlogin.getText();
-        String pass = txtpassword.getText();
-        String nombre = txtnombre.getText();
-        String apellido = txtapellidos.getText();
-        String email = txtemail.getText();
-        String nivel = adminbt.isSelected() ? "0" : "1"; // Establecer nivel según el botón seleccionado
-        String usuario = login + ";" + pass + ";" + nivel + ";" + nombre + ";" + apellido + ";" + email;
+        login = txtlogin.getText();
+        pass = txtpassword.getText();
+        pass1 = txtpassword1.getText();
         
-        // Si se está modificando un usuario
+        if (!pass.equals(pass1)) {  
+            JOptionPane.showMessageDialog(null, "No coinciden las contraseñas");
+            return;
+        }   
+            
+        nombre = txtnombre.getText();
+        apellido = txtapellidos.getText();
+        email = txtemail.getText();
+        comboGuardado=(String)comboBox.getSelectedItem();
+        if(comboGuardado.equals("Normal")){
+            nivel="1";
+        }else if(comboGuardado.equals("Administrador")){
+            nivel="0";
+        }
+        usuario= login+";"+pass+";"+nivel+";"+nombre+";"+apellido+";"+email;
+        
         if (Modificar) {
             archivos.ModificarArchivo(Lantigua, usuario, file);
             JOptionPane.showMessageDialog(null, "Modificado exitosamente");
@@ -299,7 +321,6 @@ public class Usuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Guardado exitosamente");
         }
         
-        // Limpiar los campos después de la acción
         limpiarbtActionPerformed(evt);
      }
     }//GEN-LAST:event_guardarbtActionPerformed
@@ -312,6 +333,10 @@ public class Usuarios extends javax.swing.JFrame {
         } else if (txtpassword.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "El campo de password no debe estar vacío");
             txtpassword.grabFocus();
+            return false;
+        } else if (txtpassword1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo de confirmacion de password no debe estar vacío");
+            txtpassword1.grabFocus();
             return false;
         } else if (txtnombre.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "El nombre no debe estar vacío");
@@ -333,22 +358,6 @@ public class Usuarios extends javax.swing.JFrame {
         return true;
     }
 
-    private boolean esEmailValido(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        return email.matches(emailRegex);
-    }
-
-
-    private void normalbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalbtActionPerformed
-        normalbt.setSelected(true);  
-        adminbt.setSelected(false);
-    }//GEN-LAST:event_normalbtActionPerformed
-
-    private void adminbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminbtActionPerformed
-        normalbt.setSelected(false);  
-        adminbt.setSelected(true);
-    }//GEN-LAST:event_adminbtActionPerformed
-
     private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyPressed
          if(evt.getKeyCode()== KeyEvent.VK_ENTER){
             txtapellidos.grabFocus();
@@ -360,6 +369,28 @@ public class Usuarios extends javax.swing.JFrame {
             txtemail.grabFocus();
        }
     }//GEN-LAST:event_txtapellidosKeyPressed
+
+    private void seeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seeButton1ActionPerformed
+        if (mostrarContrasena) {
+                    txtpassword1.setEchoChar('•'); 
+                    
+                } else {
+                    txtpassword1.setEchoChar((char) 0); 
+                    
+                }
+                mostrarContrasena = !mostrarContrasena; 
+    }//GEN-LAST:event_seeButton1ActionPerformed
+
+    private void seeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seeButtonActionPerformed
+       if (mostrarContrasena) {
+                    txtpassword.setEchoChar('•'); 
+                    
+                } else {
+                    txtpassword.setEchoChar((char) 0); 
+                    
+                }
+                mostrarContrasena = !mostrarContrasena; 
+    }//GEN-LAST:event_seeButtonActionPerformed
 
     
     public static void main(String args[]) {
@@ -395,27 +426,28 @@ public class Usuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel accesolbl;
-    private javax.swing.JRadioButton adminbt;
+    private javax.swing.JLabel accesolbl1;
     private javax.swing.JLabel apellidoslbl;
+    private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JLabel emaillbl;
-    private javax.swing.JTextField etqEstado;
     private javax.swing.JButton guardarbt;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JButton limpiarbt;
     private javax.swing.JLabel loginlbl;
     private javax.swing.JLabel nombrelbl;
-    private javax.swing.JRadioButton normalbt;
     private javax.swing.JLabel passwordlbl;
+    private javax.swing.JLabel passwordlbl1;
     private javax.swing.JButton salirbt;
+    private javax.swing.JButton seeButton;
+    private javax.swing.JButton seeButton1;
     private javax.swing.JTextField txtapellidos;
     private javax.swing.JTextField txtemail;
     private javax.swing.JTextField txtlogin;
     private javax.swing.JTextField txtnombre;
     private javax.swing.JPasswordField txtpassword;
+    private javax.swing.JPasswordField txtpassword1;
     // End of variables declaration//GEN-END:variables
 }

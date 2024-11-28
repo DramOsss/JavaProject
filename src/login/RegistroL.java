@@ -6,6 +6,7 @@ import Desplegables.VentanaInicio;
 import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class RegistroL extends javax.swing.JFrame {
@@ -71,7 +72,7 @@ public class RegistroL extends javax.swing.JFrame {
             }
         });
 
-        Iniciarbtn.setText("INICIAR");
+        Iniciarbtn.setText("Iniciar Session");
         Iniciarbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IniciarbtnActionPerformed(evt);
@@ -147,87 +148,83 @@ public class RegistroL extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void IniciarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarbtnActionPerformed
-          String usuario = txtusuario.getText();
+        
+        
+        String usuario = txtusuario.getText();
         String password = txtpassword.getText();
 
         if(usuario.isEmpty() && password.isEmpty()){
             JOptionPane.showMessageDialog(null, "Debe ingresar el usuario y la contraseña");
+            return;
         }
         else if(usuario.isEmpty()){
             JOptionPane.showMessageDialog(null, "Debe ingresar el usuario");
+            return;
         }
         else if(password.isEmpty()){
             JOptionPane.showMessageDialog(null, "Debe ingresar la contraseña");
+            return;
         }
 
         boolean encontrado = false;
 
-        try {
-            // Obtener la ruta dinámica del escritorio
-            String escritorio = System.getProperty("user.home") + "\\Desktop";
-            File f = new File(escritorio, "Usuario.txt");
-
-            // Verificar si el archivo existe
-            if(!f.exists()){
-                f.createNewFile();
-            } else {
-                try (Scanner a = new Scanner(f)) {
-                    while(a.hasNextLine() && !encontrado){
-                        String linea = a.nextLine();
-                        Scanner a1 = new Scanner(linea);
-                        a1.useDelimiter("\\s*;\\s*");
-
-                        String Log = a1.next();
-                        String Pass = a1.next();
-
-                        if(Log.equalsIgnoreCase(usuario) && Pass.equals(password)){
-                            int lvl = Integer.parseInt(a1.next());
-                            String name = a1.next();
-
-                            // Lógica para ventana de inicio según el nivel de usuario
-                            VentanaInicio ve = new VentanaInicio();
-                            if(lvl == 1){
-                                // Opciones específicas para nivel 1 (usuario normal)
-                            } else {
-                                // Opciones para administrador
-                            }
-                            ve.setVisible(true);
-                            encontrado = true;
-                            this.dispose();
-                        } else {
-                            if(Log.equalsIgnoreCase(usuario)){
-                                JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
-                                txtpassword.setText("");
-                                return;
-                            }
+        String escritorio = System.getProperty("user.home") + "\\Desktop";
+        File file = new File(escritorio, "Usuario.txt");
+        if(!file.exists()){
+            windowadmin();
+        } else {
+            try (Scanner a = new Scanner(file)) {
+                while(a.hasNextLine() && !encontrado){
+                    String linea = a.nextLine();
+                    String[] datos = linea.split("\\s*;\\s*");
+                    
+                    if(datos.length < 5) continue;
+                    
+                    String Log = datos[0];
+                    String Pass = datos[1];
+                    if(Log.equalsIgnoreCase(usuario) && Pass.equals(password)){
+                        int lvl = Integer.parseInt(datos[2]);
+                        String name = datos[3];
+                        
+                        VentanaInicio ventana = new VentanaInicio();
+                        if(lvl == 1){
+                            ventana.menProcesos.setVisible(false);
+                            ventana.menMantenimiento.setVisible(false);
+                        }
+                        ventana.setVisible(true);
+                        encontrado = true;
+                        this.dispose();
+                    } else {
+                        if(Log.equalsIgnoreCase(usuario)){
+                            JOptionPane.showMessageDialog(null, "Contraseña incorrecta");
+                            txtpassword.setText("");
+                            return;
                         }
                     }
-                    if (!encontrado) {
-                        JOptionPane.showMessageDialog(null, "Usuario no encontrado");
-                        txtusuario.setText("");
-                        txtpassword.setText("");
-                    }
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + ex.getMessage());
                 }
+                
+                if (!encontrado) {
+                    JOptionPane.showMessageDialog(null, "Usuario no encontrado");
+                    txtusuario.setText("");
+                    txtpassword.setText("");
+                }
+                
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + ex.getMessage());
             }
-        }
-        catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error al acceder al archivo: " + ex.getMessage());
         }
     }                                          
 
-    private void windowadmin(java.awt.event.WindowEvent evt) {                             
-       Archivos ar = new Archivos();
-        // Obtener la ruta dinámica del escritorio
+    private void windowadmin() {                             
+       Archivos archivo = new Archivos();
         String escritorio = System.getProperty("user.home") + "\\Desktop";
         File archivosDBase = new File(escritorio, "Usuario.txt");
 
         if(!archivosDBase.exists()){
             try {
-                archivosDBase.createNewFile();  // Crear el archivo si no existe
-                String Administrador = "Admin;4321;0;Admin;Admin;Provisional;admin@gmail.com";
-                ar.Guardar(Administrador, archivosDBase);
+                archivosDBase.createNewFile(); 
+                String Administrador = "admin;1234;0;admin;provisional;admin@gmail.com";
+                archivo.Guardar(Administrador, archivosDBase);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Error al crear archivo: " + e.getMessage());
             }
