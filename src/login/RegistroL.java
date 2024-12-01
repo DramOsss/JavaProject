@@ -145,6 +145,7 @@ public class RegistroL extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void IniciarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarbtnActionPerformed

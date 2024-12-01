@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -13,6 +15,7 @@ public class Usuarios extends javax.swing.JFrame {
 
     public Usuarios() {
         initComponents();
+        isProcess(Modificar);
     }
     public static String Lantigua;
     public boolean Modificar = false;
@@ -20,7 +23,6 @@ public class Usuarios extends javax.swing.JFrame {
     public String nivel= "";
     public int v;
     private boolean mostrarContrasena = false;
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -49,6 +51,7 @@ public class Usuarios extends javax.swing.JFrame {
         txtpassword1 = new javax.swing.JPasswordField();
         seeButton1 = new javax.swing.JButton();
         seeButton = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -90,6 +93,12 @@ public class Usuarios extends javax.swing.JFrame {
         );
 
         loginlbl.setText("Login");
+
+        txtlogin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtloginKeyPressed(evt);
+            }
+        });
 
         passwordlbl.setText("Password");
 
@@ -135,11 +144,33 @@ public class Usuarios extends javax.swing.JFrame {
             }
         });
 
+        txtpassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtpasswordFocusLost(evt);
+            }
+        });
+        txtpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtpasswordKeyPressed(evt);
+            }
+        });
+
         accesolbl1.setText("Nivel de Acceso");
 
         comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Administrador" }));
 
         passwordlbl1.setText("Connfirm Password");
+
+        txtpassword1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtpassword1ActionPerformed(evt);
+            }
+        });
+        txtpassword1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtpassword1KeyPressed(evt);
+            }
+        });
 
         seeButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-visible-24.png"))); // NOI18N
         seeButton1.setToolTipText("");
@@ -156,6 +187,8 @@ public class Usuarios extends javax.swing.JFrame {
                 seeButtonActionPerformed(evt);
             }
         });
+
+        jTextField1.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -208,14 +241,18 @@ public class Usuarios extends javax.swing.JFrame {
                                     .addComponent(txtlogin, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                                     .addComponent(txtpassword))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(seeButton)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1)
+                            .addComponent(seeButton))))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginlbl)
                     .addComponent(txtlogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -226,10 +263,13 @@ public class Usuarios extends javax.swing.JFrame {
                         .addComponent(passwordlbl))
                     .addComponent(seeButton))
                 .addGap(11, 11, 11)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtpassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordlbl1)
-                    .addComponent(seeButton1))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtpassword1)
+                            .addComponent(passwordlbl1))
+                        .addGap(9, 9, 9))
+                    .addComponent(seeButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nombrelbl)
@@ -273,9 +313,24 @@ public class Usuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_salirbtActionPerformed
 
      private boolean esEmailValido(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        String emailRegex = "^[A-Za-z0-9+_.-]+@  (.+)$";
         return email.matches(emailRegex);
     }
+     
+    private void isProcess(boolean value){
+         if (!value){
+             jTextField1.setText("Creando");
+             txtpassword1.setVisible(true);
+            passwordlbl1.setVisible(true);
+            seeButton1.setVisible(true);
+         } else{
+            jTextField1.setText("Modificando");
+            txtpassword1.setVisible(false);
+            passwordlbl1.setVisible(false);
+            seeButton1.setVisible(false);
+         }
+     }
+    
 
      
     private void limpiarbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarbtActionPerformed
@@ -287,12 +342,13 @@ public class Usuarios extends javax.swing.JFrame {
         txtemail.setText("");
     }//GEN-LAST:event_limpiarbtActionPerformed
 
+     
     private void guardarbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarbtActionPerformed
      if (validarCampos()) {
         Archivos archivos = new Archivos();
         File file = new File("C:\\Users\\admin\\\\Desktop\\Usuario.txt");
         String usuario, login, pass, pass1, nombre, apellido,email,comboGuardado;
-        // Recoger los valores de los campos
+        
         login = txtlogin.getText();
         pass = txtpassword.getText();
         pass1 = txtpassword1.getText();
@@ -350,24 +406,17 @@ public class Usuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "El Email no debe estar vacío");
             txtemail.grabFocus();
             return false;
-        } else if (!esEmailValido(txtemail.getText())) { // Asumir que v es una variable que valida el email
+        } else if (!esEmailValido(txtemail.getText())) { 
             JOptionPane.showMessageDialog(null, "El email no es válido");
             txtemail.grabFocus();
+               
             return false;
         }
         return true;
     }
 
-    private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyPressed
-         if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-            txtapellidos.grabFocus();
-        }
-    }//GEN-LAST:event_txtnombreKeyPressed
-
     private void txtapellidosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtapellidosKeyPressed
-       if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-            txtemail.grabFocus();
-       }
+
     }//GEN-LAST:event_txtapellidosKeyPressed
 
     private void seeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seeButton1ActionPerformed
@@ -392,6 +441,89 @@ public class Usuarios extends javax.swing.JFrame {
                 mostrarContrasena = !mostrarContrasena; 
     }//GEN-LAST:event_seeButtonActionPerformed
 
+    private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyPressed
+        char c = evt.getKeyChar();
+         if (!Character.isLetter(c) && c != ' ') {
+            evt.consume();}
+    }//GEN-LAST:event_txtnombreKeyPressed
+
+    private void txtloginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtloginKeyPressed
+//        if(evt.getKeyCode()== KeyEvent.VK_ENTER){
+//            txtpassword.grabFocus();}
+    }//GEN-LAST:event_txtloginKeyPressed
+
+    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
+//        if(evt.getKeyCode()== KeyEvent.VK_ENTER){
+//            txtpassword1.grabFocus();}
+    }//GEN-LAST:event_txtpasswordKeyPressed
+
+    private void txtpassword1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpassword1KeyPressed
+//        if(evt.getKeyCode()== KeyEvent.VK_ENTER){
+//            txtnombre.grabFocus();}
+    }//GEN-LAST:event_txtpassword1KeyPressed
+
+    private void txtpassword1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpassword1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtpassword1ActionPerformed
+
+    private void txtpasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusLost
+         checkLogin();
+    }//GEN-LAST:event_txtpasswordFocusLost
+
+    public void checkLogin() {
+        String login_u = txtlogin.getText();
+        String pass_u = txtpassword.getText();
+        boolean find = false;
+        try (Scanner read = new Scanner(new File("C:\\Users\\admin\\Desktop\\Usuario.txt"))) {
+            
+            File file = new File("C:\\Users\\admin\\Desktop\\Usuario.txt");
+            if (!file.exists()) {
+                file.createNewFile(); 
+            }
+
+            while (read.hasNextLine() && !find) {
+                String lineaActual = read.nextLine();
+                try (Scanner newScan = new Scanner(lineaActual)) {
+                    newScan.useDelimiter("\\s*;\\s*");
+
+                    String auxlogin = newScan.next();
+                    String auxPass = newScan.next();
+
+                    if (login_u.equals(auxlogin) && pass_u.equals(auxPass)) {
+                        // Login and password matched
+                        Nivel = Integer.parseInt(newScan.next());
+                        comboBox.setSelectedIndex(Nivel == 0 ? 0 : 1); // Set combobox index based on Nivel value
+
+                        txtnombre.setText(newScan.next());
+                        txtapellidos.setText(newScan.next());
+                        txtemail.setText(newScan.next());
+
+                        Lantigua = login_u + ";" + pass_u + ";" + txtnombre.getText() + ";" + txtapellidos.getText() + ";" + txtemail.getText();
+                        Modificar = true;
+                        isProcess(Modificar);
+                        find = true;
+                        
+                    }
+                    
+                } catch (Exception ex) {
+                    // Handle exceptions during parsing
+                    Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (!find) {
+                Modificar = false;
+                isProcess(Modificar);
+                txtpassword1.setText("");
+                txtnombre.setText("");
+                txtapellidos.setText("");
+                txtemail.setText("");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+  
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -435,6 +567,7 @@ public class Usuarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton limpiarbt;
     private javax.swing.JLabel loginlbl;
     private javax.swing.JLabel nombrelbl;

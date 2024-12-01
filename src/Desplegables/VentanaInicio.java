@@ -24,8 +24,8 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         // Condicional para cambiar la visibilidad de los menús
         if (Nivel == 0) {
-            menMantenimiento.setVisible(false); // Ocultar jMenu1
-            menProcesos.setVisible(false); // Ocultar jMenu11
+            menMantenimiento.setVisible(false); 
+            menProcesos.setVisible(false); 
         }
     }
 
@@ -57,8 +57,8 @@ public class VentanaInicio extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         menMantenimiento = new javax.swing.JMenu();
         itmUsuario = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        itmCatalogo = new javax.swing.JMenuItem();
+        menMovimiento = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         menProcesos = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -143,20 +143,25 @@ public class VentanaInicio extends javax.swing.JFrame {
         });
         menMantenimiento.add(itmUsuario);
 
-        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-catalogo-externo-inmobiliario-esquema-bartama-esquema-64-bartama-grafico-32.png"))); // NOI18N
-        jMenuItem6.setText("Catalogo de cuenta");
-        menMantenimiento.add(jMenuItem6);
+        itmCatalogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-catalogo-externo-inmobiliario-esquema-bartama-esquema-64-bartama-grafico-32.png"))); // NOI18N
+        itmCatalogo.setText("Catalogo de cuenta");
+        itmCatalogo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmCatalogoActionPerformed(evt);
+            }
+        });
+        menMantenimiento.add(itmCatalogo);
 
         jMenuBar1.add(menMantenimiento);
 
-        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-negocio-32.png"))); // NOI18N
-        jMenu2.setText("Movimiento");
+        menMovimiento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-negocio-32.png"))); // NOI18N
+        menMovimiento.setText("Movimiento");
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-tarjeta-32.png"))); // NOI18N
         jMenuItem3.setText("Transacciones");
-        jMenu2.add(jMenuItem3);
+        menMovimiento.add(jMenuItem3);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menMovimiento);
 
         menProcesos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-administración-de-explotación-comercial-32.png"))); // NOI18N
         menProcesos.setText("Procesos");
@@ -197,11 +202,6 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-analítica-32.png"))); // NOI18N
         jMenuItem12.setText("Resumen de gastos generales");
-        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem12ActionPerformed(evt);
-            }
-        });
         jMenu12.add(jMenuItem12);
 
         jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-signo-de-dinero-32.png"))); // NOI18N
@@ -226,6 +226,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     
@@ -266,9 +267,10 @@ public class VentanaInicio extends javax.swing.JFrame {
         us.setVisible(true);
     }//GEN-LAST:event_itmUsuarioActionPerformed
 
-    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
+    private void itmCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmCatalogoActionPerformed
+       Catalogodecuentas cc = new Catalogodecuentas();
+       cc.setVisible(true);
+    }//GEN-LAST:event_itmCatalogoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -306,10 +308,10 @@ public class VentanaInicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itmCatalogo;
     private javax.swing.JMenuItem itmUsuario;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu12;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
@@ -331,13 +333,13 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     public javax.swing.JMenu menMantenimiento;
+    private javax.swing.JMenu menMovimiento;
     public javax.swing.JMenu menProcesos;
     // End of variables declaration//GEN-END:variables
 }
