@@ -467,10 +467,10 @@ public class Usuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_txtpassword1ActionPerformed
 
     private void txtpasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusLost
-         checkLogin();
+         checkExist();
     }//GEN-LAST:event_txtpasswordFocusLost
 
-    public void checkLogin() {
+    public void checkExist() {
         String login_u = txtlogin.getText();
         String pass_u = txtpassword.getText();
         boolean find = false;
