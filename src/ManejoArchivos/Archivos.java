@@ -24,45 +24,55 @@ public class Archivos {
         
     }
     
-    public void ModificarArchivo(String Oldcadena, String Newcadena, File Oarchivo){
-        File Narchivo = new File("D:\\DB\\temp.txt");
+    public void ModificarArchivo(String Oldcadena, String Newcadena, File Oarchivo) {
+       // Obtener la ruta del escritorio de manera programática
+       String escritorio = System.getProperty("user.home") + File.separator + "Desktop";
+       File Narchivo = new File(escritorio + File.separator + "temp.txt");
 
-        try {
-            Narchivo.createNewFile();
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        
-        BufferedReader br;
-        try {
-            if (Oarchivo.exists()) {
+       // Crear el archivo temporal si no existe
+       try {
+           if (!Narchivo.exists()) {
+               Narchivo.createNewFile();
+           }
+       } catch (IOException ex) {
+           System.out.println("Error al crear el archivo temporal: " + ex);
+           return;
+       }
 
-                br = new BufferedReader(new FileReader(Oarchivo));
+       // Usar BufferedReader para leer y BufferedWriter para escribir
+       try (BufferedReader br = new BufferedReader(new FileReader(Oarchivo));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(Narchivo))) {
 
-                String linea;
+           String linea;
+           // Leer línea por línea del archivo original
+           while ((linea = br.readLine()) != null) {
+               // Si la línea coincide con Oldcadena, escribe Newcadena, si no, escribe la línea original
+               if (linea.equals(Oldcadena)) {
+                   bw.write(Newcadena);
+               } else {
+                   bw.write(linea);
+               }
+               bw.newLine(); // Para añadir una nueva línea después de cada línea escrita
+           }
 
-                while ((linea = br.readLine()) != null) {
+       } catch (IOException e) {
+           System.out.println("Error al procesar el archivo: " + e);
+           return;
+       }
 
-                    if (linea.equals(Oldcadena)) {
-                        Guardar(Newcadena, Narchivo);
-                    } else {
-                        Guardar(linea, Narchivo);
-                    }
-                }
-               
-                br.close();
-
-                BorrarArchivo(Oarchivo);
-                Narchivo.renameTo(Oarchivo);
-
-            } else {
-                System.out.println("No existe el archivo");
-            }
-
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }
+       // Borrar el archivo original y renombrar el archivo temporal
+       if (Oarchivo.exists()) {
+           if (Oarchivo.delete()) {
+               if (!Narchivo.renameTo(Oarchivo)) {
+                   System.out.println("Error al renombrar el archivo temporal");
+               }
+           } else {
+               System.out.println("No se pudo eliminar el archivo original");
+           }
+       } else {
+           System.out.println("El archivo original no existe");
+       }
+   }
     
     public void BorrarArchivo(File f){
         try{

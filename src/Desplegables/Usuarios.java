@@ -1,14 +1,10 @@
 package Desplegables;
 import ManejoArchivos.Archivos;
-import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 public class Usuarios extends javax.swing.JFrame {
