@@ -11,11 +11,12 @@ import java.util.Scanner;
 
 public class RegistroL extends javax.swing.JFrame {
 
+  private int lvl;
+  public static String usuarioLogin;
     
     public RegistroL() {
         initComponents();
     }
-  private int lvl;
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -150,7 +151,6 @@ public class RegistroL extends javax.swing.JFrame {
 
     private void IniciarbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarbtnActionPerformed
         
-        
         String usuario = txtusuario.getText();
         String password = txtpassword.getText();
 
@@ -194,6 +194,7 @@ public class RegistroL extends javax.swing.JFrame {
                         }
                         ventana.setVisible(true);
                         encontrado = true;
+                        usuarioLogin = txtusuario.getText();
                         this.dispose();
                     } else {
                         if(Log.equalsIgnoreCase(usuario)){
@@ -214,7 +215,11 @@ public class RegistroL extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + ex.getMessage());
             }
         }
-    }                                          
+    }    
+    
+    public static String getUsuarioLogin() {
+        return usuarioLogin;
+    }
 
     private void windowadmin() {                             
        Archivos archivo = new Archivos();

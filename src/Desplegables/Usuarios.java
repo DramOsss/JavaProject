@@ -19,12 +19,14 @@ public class Usuarios extends javax.swing.JFrame {
     public String nivel= "";
     public int v;
     private boolean mostrarContrasena = false;
+  
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -59,6 +61,8 @@ public class Usuarios extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
+
+        jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,11 +112,14 @@ public class Usuarios extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtnombreKeyPressed(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtnombreKeyTyped(evt);
+            }
         });
 
         txtapellidos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtapellidosKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtapellidosKeyTyped(evt);
             }
         });
 
@@ -308,10 +315,10 @@ public class Usuarios extends javax.swing.JFrame {
          this.dispose();
     }//GEN-LAST:event_salirbtActionPerformed
 
-     private boolean esEmailValido(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@  (.+)$";
-        return email.matches(emailRegex);
-    }
+//     private boolean esEmailValido(String email) {
+//        String emailRegex = "^[A-Za-z0-9+_.-]+@  (.+)$";
+//        return email.matches(emailRegex);
+//    }
      
     private void isProcess(boolean value){
          if (!value){
@@ -402,18 +409,14 @@ public class Usuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "El Email no debe estar vacío");
             txtemail.grabFocus();
             return false;
-        } else if (!esEmailValido(txtemail.getText())) { 
-            JOptionPane.showMessageDialog(null, "El email no es válido");
-            txtemail.grabFocus();
-               
-            return false;
+//        } else if (!esEmailValido(txtemail.getText())) { 
+////            JOptionPane.showMessageDialog(null, "El email no es válido");
+////            txtemail.grabFocus();
+//               
+//            return false;
         }
         return true;
     }
-
-    private void txtapellidosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtapellidosKeyPressed
-
-    }//GEN-LAST:event_txtapellidosKeyPressed
 
     private void seeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seeButton1ActionPerformed
         if (mostrarContrasena) {
@@ -439,23 +442,17 @@ public class Usuarios extends javax.swing.JFrame {
 
     private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyPressed
         char c = evt.getKeyChar();
-         if (!Character.isLetter(c) && c != ' ') {
+         if (!Character.isLetter(c)) {
             evt.consume();}
     }//GEN-LAST:event_txtnombreKeyPressed
 
     private void txtloginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtloginKeyPressed
-//        if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-//            txtpassword.grabFocus();}
     }//GEN-LAST:event_txtloginKeyPressed
 
     private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
-//        if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-//            txtpassword1.grabFocus();}
     }//GEN-LAST:event_txtpasswordKeyPressed
 
     private void txtpassword1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpassword1KeyPressed
-//        if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-//            txtnombre.grabFocus();}
     }//GEN-LAST:event_txtpassword1KeyPressed
 
     private void txtpassword1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpassword1ActionPerformed
@@ -465,6 +462,18 @@ public class Usuarios extends javax.swing.JFrame {
     private void txtpasswordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtpasswordFocusLost
          checkExist();
     }//GEN-LAST:event_txtpasswordFocusLost
+
+    private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
+        char c = evt.getKeyChar();
+         if (!Character.isLetter(c) && c != ' ') {
+            evt.consume();}
+    }//GEN-LAST:event_txtnombreKeyTyped
+
+    private void txtapellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtapellidosKeyTyped
+         char c = evt.getKeyChar();
+         if (!Character.isLetter(c) && c != ' ') {
+            evt.consume();}
+    }//GEN-LAST:event_txtapellidosKeyTyped
 
     public void checkExist() {
         String login_u = txtlogin.getText();
@@ -559,6 +568,7 @@ public class Usuarios extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JLabel emaillbl;
     private javax.swing.JButton guardarbt;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

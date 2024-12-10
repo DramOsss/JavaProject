@@ -159,6 +159,11 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-tarjeta-32.png"))); // NOI18N
         jMenuItem3.setText("Transacciones");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         menMovimiento.add(jMenuItem3);
 
         jMenuBar1.add(menMovimiento);
@@ -271,6 +276,11 @@ public class VentanaInicio extends javax.swing.JFrame {
        Catalogodecuentas cc = new Catalogodecuentas();
        cc.setVisible(true);
     }//GEN-LAST:event_itmCatalogoActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        Movimientodetrasaccion mt = new Movimientodetrasaccion();
+        mt.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments

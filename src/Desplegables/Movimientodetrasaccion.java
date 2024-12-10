@@ -4,18 +4,57 @@
  */
 package Desplegables;
 
+import static Desplegables.Catalogodecuentas.Lantigua;
+import Desplegables.Usuarios;
+import ManejoArchivos.Archivos;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import login.RegistroL;
+
 /**
  *
  * @author DELL
  */
 public class Movimientodetrasaccion extends javax.swing.JFrame {
 
+    private boolean Modificar;
+
     /**
      * Creates new form Movimientodetrasaccion
      */
     public Movimientodetrasaccion() {
         initComponents();
+        ObtenerFechaHora();
+        GetUser();
+        status.setText("Creando");
+        boolean Modificar = false;
+        
     }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -30,33 +69,35 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        sdvdsdv = new javax.swing.JLabel();
+        ede = new javax.swing.JLabel();
+        xxxx = new javax.swing.JLabel();
+        datec = new javax.swing.JTextField();
+        txtuser = new javax.swing.JTextField();
+        status = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtDocumentos = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        txtMonto = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
         jToggleButton3 = new javax.swing.JToggleButton();
         jToggleButton4 = new javax.swing.JToggleButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        TipoDocumentoComboBox = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        txtCuenta = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtCredito = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtDebito = new javax.swing.JTextField();
+        Addbt = new javax.swing.JButton();
+        Addbt1 = new javax.swing.JButton();
+        sumDebito = new javax.swing.JTextField();
+        sumCredito = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,26 +114,36 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(201, 201, 201)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(207, 207, 207))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
+                .addContainerGap(45, Short.MAX_VALUE)
                 .addComponent(jLabel10)
-                .addGap(29, 29, 29))
+                .addGap(34, 34, 34))
         );
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-fecha-16.png"))); // NOI18N
+        sdvdsdv.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-fecha-16.png"))); // NOI18N
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-tiempo-16.png"))); // NOI18N
+        ede.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-usuario-16.png"))); // NOI18N
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-usuario-16.png"))); // NOI18N
+        xxxx.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-indicador-de-progreso-16.png"))); // NOI18N
 
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-indicador-de-progreso-16.png"))); // NOI18N
+        datec.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        datec.setEnabled(false);
+        datec.setFocusable(false);
+
+        txtuser.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        txtuser.setEnabled(false);
+        txtuser.setFocusable(false);
+
+        status.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        status.setEnabled(false);
+        status.setFocusable(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -100,71 +151,111 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel14))
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(sdvdsdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ede, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(xxxx, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(datec)
+                    .addComponent(txtuser)
+                    .addComponent(status, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel11)
-                .addGap(12, 12, 12)
-                .addComponent(jLabel13)
-                .addGap(12, 12, 12)
-                .addComponent(jLabel14)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(datec)
+                    .addComponent(sdvdsdv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ede, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(status)
+                    .addComponent(xxxx, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
-        jLabel1.setText("NO. DOC");
+        jLabel1.setText("No.Doc");
 
-        jLabel2.setText("TIPO DOC");
+        txtDocumentos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtDocumentosFocusLost(evt);
+            }
+        });
+        txtDocumentos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDocumentosKeyTyped(evt);
+            }
+        });
 
-        jLabel3.setText("DESCRIPCION");
+        jLabel2.setText("Tipo Doc");
 
-        jLabel4.setText("MONTO");
+        jLabel3.setText("Descripcion");
 
-        jLabel5.setText("CUENTA");
+        jLabel4.setText("Monto");
 
-        jLabel6.setText("DEBITO");
-
-        jLabel7.setText("CREDITO");
-
-        jLabel8.setText("COMENTARIO");
+        txtMonto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMontoKeyTyped(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
+        jTable1.setColumnSelectionAllowed(true);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        jTable1.setShowGrid(true);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jTable1AncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+                jTable1AncestorRemoved(evt);
+            }
+        });
+        jTable1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jTable1PropertyChange(evt);
+            }
+        });
+        jTable1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTable1KeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setHeaderValue("Title 2");
-            jTable1.getColumnModel().getColumn(2).setHeaderValue("Title 3");
-            jTable1.getColumnModel().getColumn(3).setHeaderValue("Title 4");
-        }
-
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-añadir-32.png"))); // NOI18N
-        jToggleButton1.setText("ADD");
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-guardar-32.png"))); // NOI18N
         jToggleButton2.setText("Guardar");
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
 
         jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-actualizar-32.png"))); // NOI18N
         jToggleButton3.setText("Limpiar");
+        jToggleButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton3ActionPerformed(evt);
+            }
+        });
 
         jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-salida-32.png"))); // NOI18N
         jToggleButton4.setText("Salida");
@@ -174,7 +265,55 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        TipoDocumentoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Factura", "Ajuste", "Documento Interno", "Cheque" }));
+
+        jLabel5.setText("Cuenta");
+
+        txtCuenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCuentaKeyTyped(evt);
+            }
+        });
+
+        jLabel6.setText("Credito");
+
+        txtCredito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCreditoKeyTyped(evt);
+            }
+        });
+
+        jLabel7.setText("Debito");
+
+        txtDebito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDebitoKeyTyped(evt);
+            }
+        });
+
+        Addbt.setBackground(new java.awt.Color(204, 204, 204));
+        Addbt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-añadir-32.png"))); // NOI18N
+        Addbt.setText("ADD");
+        Addbt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddbtActionPerformed(evt);
+            }
+        });
+
+        Addbt1.setBackground(new java.awt.Color(204, 204, 204));
+        Addbt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-cancelar-32.png"))); // NOI18N
+        Addbt1.setText("DELETE");
+        Addbt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Addbt1ActionPerformed(evt);
+            }
+        });
+
+        sumDebito.setEnabled(false);
+        sumDebito.setFocusable(false);
+
+        sumCredito.setEnabled(false);
+        sumCredito.setFocusable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -182,114 +321,116 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(26, 26, 26)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(26, 26, 26)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(16, 16, 16))))
+                                    .addComponent(txtDocumentos, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TipoDocumentoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtDescripcion)
+                                .addGap(64, 64, 64)))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(Addbt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Addbt1))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGap(73, 73, 73)
+                                .addComponent(txtCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDebito, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(137, 137, 137)
-                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91)
-                .addComponent(jToggleButton3)
-                .addGap(97, 97, 97)
-                .addComponent(jToggleButton4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(91, 91, 91)
+                        .addComponent(jToggleButton3)
+                        .addGap(97, 97, 97)
+                        .addComponent(jToggleButton4)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel4)
+                        .addGap(38, 38, 38)
+                        .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(sumDebito, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sumCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(136, 136, 136)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(txtDocumentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TipoDocumentoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel5)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6)
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)
-                                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel8)
-                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtDebito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Addbt)
+                    .addComponent(Addbt1))
                 .addGap(18, 18, 18)
-                .addComponent(jToggleButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sumDebito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sumCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jToggleButton2)
                     .addComponent(jToggleButton3)
                     .addComponent(jToggleButton4))
-                .addGap(235, 235, 235))
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -300,18 +441,655 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jToggleButton4ActionPerformed
 
+    private void AddbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddbtActionPerformed
+
+        if(txtCuenta.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo de cuenta no debe estar vacío");
+            return;
+        }
+
+//        if(txtMonto.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "El campo de monto no debe estar vacío");
+//            return;
+//        }
+
+//        double monto;
+//        try {
+//            monto = Double.parseDouble(txtMonto.getText());
+//            if(monto <= 0) {
+//                JOptionPane.showMessageDialog(null, "El monto debe ser un valor positivo");
+//                txtMonto.setText("0");
+//                return;
+//            }
+//        } catch (NumberFormatException e) {
+//            JOptionPane.showMessageDialog(null, "El campo monto debe ser un valor numérico válido");
+//            return;
+//        }
+
+        double credito = 0;
+        double debito = 0;
+
+        if (!txtCredito.getText().isEmpty()) {
+            try {
+                credito = Double.parseDouble(txtCredito.getText());
+                if (credito < 0) {
+                    credito = 0;
+                    txtCredito.setText("0");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El campo de crédito debe ser un valor numérico válido");
+                return;
+            }
+        }
+
+        if (!txtDebito.getText().isEmpty()) {
+            try {
+                debito = Double.parseDouble(txtDebito.getText());
+                if (debito < 0) {
+                    debito = 0;
+                    txtDebito.setText("0");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El campo de débito debe ser un valor numérico válido");
+                return;
+            }
+        }
+
+        if ((credito > 0 && debito > 0) || (credito == 0 && debito == 0)) {
+            JOptionPane.showMessageDialog(null, "Solo uno de los campos Crédito o Débito puede tener un valor mayor a cero");
+            return;
+        }
+
+//        if (credito > monto) {
+//            JOptionPane.showMessageDialog(null, "El valor de crédito no puede ser mayor al monto");
+//            return;
+//        }
+//
+//        if (debito > monto) {
+//            JOptionPane.showMessageDialog(null, "El valor de débito no puede ser mayor al monto");
+//            return;
+//        }
+
+        checkExist();
+        
+        
+    }//GEN-LAST:event_AddbtActionPerformed
+        
+    private void txtDocumentosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDocumentosKeyTyped
+       char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDocumentosKeyTyped
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        guardarTransaccion();
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void txtMontoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMontoKeyTyped
+         char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtMontoKeyTyped
+
+    private void txtCuentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuentaKeyTyped
+         char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCuentaKeyTyped
+
+    private void txtDebitoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebitoKeyTyped
+         char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDebitoKeyTyped
+
+    private void txtCreditoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCreditoKeyTyped
+         char c = evt.getKeyChar();
+        if (!Character.isDigit(c)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCreditoKeyTyped
+
+    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
+        limpiarCampos();
+    }//GEN-LAST:event_jToggleButton3ActionPerformed
+
+    private void Addbt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Addbt1ActionPerformed
+        eliminarFilasSeleccionadas();
+    }//GEN-LAST:event_Addbt1ActionPerformed
+
+    private void jTable1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTable1PropertyChange
+       actualizarTotales();
+    }//GEN-LAST:event_jTable1PropertyChange
+
+    private void jTable1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable1KeyTyped
+        actualizarTotales();
+    }//GEN-LAST:event_jTable1KeyTyped
+
+    private void jTable1AncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorRemoved
+        actualizarTotales();
+    }//GEN-LAST:event_jTable1AncestorRemoved
+
+    private void jTable1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jTable1AncestorAdded
+        actualizarTotales();
+    }//GEN-LAST:event_jTable1AncestorAdded
+
+    private void txtDocumentosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDocumentosFocusLost
+  
+        String numDocuments_u = txtDocumentos.getText();  
+        boolean find = false;
+
+        File file = new File("C:\\Users\\admin\\Desktop\\Cabecera_Transaccion_Contable.txt");
+
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(null, "El archivo Cabecera_Transaccion_Contable.txt no existe.");
+            return; 
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String lineaActual;
+            while ((lineaActual = br.readLine()) != null && !find) {
+                String[] datos = lineaActual.split(";");
+
+                if (datos.length >= 8) {  // Asegurarse de que hay suficientes columnas
+                    String auxNumCuenta = datos[0];  
+                    if (numDocuments_u.equals(auxNumCuenta)) {
+                        find = true;
+
+                        // Obtener los detalles de la transacción
+                        String auxFecha = datos[1];
+                        String auxTipoDocumento = datos[2];
+                        String auxDescripcion = datos[3];
+                        String auxUsuario = datos[4];
+                        String auxMonto = datos[5];   
+                        String auxStatus = datos[6];
+                        String auxFechaActualizacion = datos[7];
+
+                        // Establecer los valores en los campos de texto de la interfaz
+                        datec.setText(auxFecha);
+                        TipoDocumentoComboBox.setSelectedItem(auxTipoDocumento);
+                        txtDescripcion.setText(auxDescripcion);
+                        txtuser.setText(auxUsuario);
+                        txtMonto.setText(auxMonto);
+                        if(auxStatus != "0")
+                        {
+                            status.setText("Sin Modificar");}
+
+                        buscarDetallesTransaccion(numDocuments_u);
+                    }
+                }
+            }
+
+            if (!find) {
+                JOptionPane.showMessageDialog(null, "No se encontró la cuenta en el archivo.");
+            }
+
+        } catch (IOException e) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, "Error al leer el archivo", e);
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + e.getMessage());
+        }
+    }
+    
+    private void buscarDetallesTransaccion(String numDocuments_u) {
+
+        File file = new File("C:\\Users\\admin\\Desktop\\Transaccion_Contable.txt");
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(null, "El archivo Transaccion_Contable.txt no existe.");
+            return; 
+        }
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();  
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String lineaActual;
+            boolean found = false;
+
+            while ((lineaActual = br.readLine()) != null) {
+                String[] datos = lineaActual.split(";");
+
+                if (datos.length >= 8) { 
+                    String auxnumDocuments = datos[0];
+                    if (numDocuments_u.equals(auxnumDocuments)) {
+                        found = true;
+
+                        String auxSecuencia = datos[1];
+                        String auxCuenta = datos[2];
+
+                        String value = validarExistencia(auxCuenta); 
+                        String[] valueParts = value.split(", ");  // Dividir la cadena en partes (descripción y origen)
+                        String auxDescripcion = valueParts[0];
+                        String origen = valueParts.length > 1 ? valueParts[1] : "";  // Si no hay origen, asignar "Desconocido"
+
+                        String auxDebito = datos[3];
+                        String auxCredito = datos[4];
+                        String auxComentario = datos[5];
+
+                        // Establecer las columnas si no se han establecido
+                        if (model.getColumnCount() == 0) {
+                            model.setColumnIdentifiers(new Object[]{
+                                "Numero de Cuenta", "Descripcion", "Secuencia", "Origen", "Debito", "Credito", "Comentario"
+                            });
+                        }
+                        model.addRow(new Object[]{
+                            auxnumDocuments, auxDescripcion, auxSecuencia, origen, auxDebito, auxCredito, auxComentario
+                        });
+                    }
+                }
+            }
+
+            if (!found) {
+                JOptionPane.showMessageDialog(null, "No se encontraron detalles para este documento.");
+            }
+
+        } catch (IOException e) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, "Error al leer el archivo de detalles", e);
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo de detalles: " + e.getMessage());
+        }
+    }//GEN-LAST:event_txtDocumentosFocusLost
+    
+    private String validarExistencia(String cuentaContable) {
+      File file = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
+      try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+          String linea;
+          while ((linea = reader.readLine()) != null) {
+              String[] campos = linea.split(";");
+              if (campos[0].equals(cuentaContable)) {
+                  // Si la cuenta existe, obtener la descripción y el origen
+                  String descripcion = campos[1];
+                  String origen = validarGrupoCuenta(campos[5]);  // Origen basado en el campo 5
+                  return descripcion + ", " + origen;  // Devuelve la descripción y el origen concatenados
+              }
+          }
+      } catch (IOException e) {
+          JOptionPane.showMessageDialog(null, "Error al leer el catálogo de cuentas");
+      }
+      return "Cuenta no encontrada";  // Si no se encuentra la cuenta
+   }
+       
+    public void checkExist() {
+        String numCuenta_u = txtCuenta.getText();  // Número de cuenta ingresado
+        boolean find = false;
+
+        File file = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
+
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(null, "El archivo Catalogo_Cuentas.txt no existe.");
+            return; 
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String lineaActual;
+            while ((lineaActual = br.readLine()) != null && !find) {
+                String[] datos = lineaActual.split(";");
+
+                if (datos.length >= 11) {
+                    String auxNumCuenta = datos[0]; 
+                    if (numCuenta_u.equals(auxNumCuenta)) {
+                        find = true; // Cuenta encontrada
+
+                        String auxDescipcion = datos[1];
+                        String auxtCuenta = datos[2];
+                        String auxGrupoCuenta = datos[5];
+                        String auxTipoDocumento = String.valueOf(TipoDocumentoComboBox.getSelectedItem());
+                        String origen = validarGrupoCuenta(auxGrupoCuenta);
+                        String auxDebito = txtDebito.getText() ;  // Débito
+                        String auxCredito = txtCredito.getText(); // Crédito
+                        String auxSecuencia = obtenerSecuenciaDocumento(auxTipoDocumento);
+
+                        if (auxDebito.isEmpty())
+                            auxDebito = "0";
+
+                        if (auxCredito.isEmpty()) 
+                            auxCredito = "0";
+                        
+                        String grupoCuenta = validarGrupoCuenta(auxGrupoCuenta);
+                        if (grupoCuenta.equals("0")) {
+                            JOptionPane.showMessageDialog(null, "El grupo de cuenta no es valido.");
+                            return; 
+                        }
+                        
+                        if (auxtCuenta.equals("General")) {
+                            JOptionPane.showMessageDialog(null, "Una cuenta general no debe tener movimiento.");
+                            return; 
+                        }
+                        agregarCuentaATabla(numCuenta_u, auxDescipcion, auxSecuencia , origen, auxDebito, auxCredito);
+                    }
+                }
+            }
+
+            if (!find) {
+                JOptionPane.showMessageDialog(null, "Cuenta no encontrada.");
+            }
+
+        } catch (IOException e) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, "Error al leer el archivo", e);
+        }
+    }
+
+    private String validarGrupoCuenta(String auxGrupoCuenta) {
+        switch (auxGrupoCuenta) {
+            case "Activo":
+                return "Debito";
+            case "Pasivo":
+                return "Credito";
+            case "Capital":
+                return "Credito"; 
+            case "Ingresos":
+                return "Credito"; 
+            case "Costos":
+                return "Debito"; 
+            case "Gastos":
+                return "Debito"; 
+            default:
+                return "0"; 
+        }
+    }
+   
+    private void agregarCuentaATabla(String numCuenta, String descripcion, String auxSecuencia, String auxGrupoCuenta, String auxDebito, String auxCredito) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        model.setColumnIdentifiers(new Object[]{
+            "Numero de Cuenta", "Descripcion", "Secuencia", "Origen", "Debito", "Credito", "Comentario"
+        });
+
+        model.addRow(new Object[]{numCuenta, descripcion, auxSecuencia, auxGrupoCuenta, auxDebito, auxCredito, ""});
+
+        txtCuenta.setText("");
+        txtDebito.setText("");
+        txtCredito.setText("");
+
+        jTable1.setDefaultEditor(Object.class, null);
+
+        JTextField debitoField = new JTextField();
+        debitoField.setFont(new Font("Segoe UI", Font.PLAIN, 12)); 
+        debitoField.setBorder(BorderFactory.createEmptyBorder()); 
+
+        JTextField creditoField = new JTextField();
+        creditoField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        creditoField.setBorder(BorderFactory.createEmptyBorder()); 
+
+        // Hacer las columnas específicas editables
+        TableColumnModel columnModel = jTable1.getColumnModel();
+        columnModel.getColumn(4).setCellEditor(new DefaultCellEditor(debitoField)); 
+        columnModel.getColumn(5).setCellEditor(new DefaultCellEditor(creditoField));
+        
+
+    }
+    
+    private void eliminarFilasSeleccionadas() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int[] filasSeleccionadas = jTable1.getSelectedRows(); // Obtener las filas seleccionadas
+
+        for (int i = filasSeleccionadas.length - 1; i >= 0; i--) {
+            model.removeRow(filasSeleccionadas[i]);
+        }
+                      
+    }   
+    
+    private void actualizarTotales() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        double totalDebito = 0;
+        double totalCredito = 0;
+        
+        // Recorremos todas las filas y sumamos los valores de las columnas de Débito y Crédito
+        for (int i = 0; i < model.getRowCount(); i++) {
+            try {
+                // Intentamos parsear los valores de Débito y Crédito a double
+                double debito = Double.parseDouble(model.getValueAt(i, 4).toString());  
+                double credito = Double.parseDouble(model.getValueAt(i, 5).toString());  
+                totalDebito += debito;
+                totalCredito += credito;
+            } catch (NumberFormatException e) {
+                // Si ocurre un error de formato, continuamos (se podría mostrar un mensaje si es necesario)
+            }
+        }
+        
+        // Actualizamos las etiquetas con los totales
+        sumDebito.setText(String.valueOf(totalDebito));
+        sumCredito.setText(String.valueOf(totalCredito));
+    }
+
+
+    private void  ObtenerFechaHora() {
+        LocalDateTime fechaHora = LocalDateTime.now();
+
+        DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String fecha = fechaHora.toLocalDate().format(formatterFecha);
+
+        datec.setText(fecha);    
+    } 
+    
+    private void  GetUser() {
+        txtuser.setText(RegistroL.getUsuarioLogin());
+    } 
+    public void guardarTransaccion() {
+        if (validarCampos()) {
+            Archivos archivos = new Archivos();
+            File cabeceraFile = new File("C:\\Users\\admin\\Desktop\\Cabecera_Transaccion_Contable.txt");
+            File detalleFile = new File("C:\\Users\\admin\\Desktop\\Transaccion_Contable.txt");
+
+            String Documentos = txtDocumentos.getText();
+            String tipoDocumento = String.valueOf(TipoDocumentoComboBox.getSelectedItem());
+            String Descripcion = txtDescripcion.getText();
+            String User = txtuser.getText();
+            String status = "1";  // Asumido como 1
+            String dateAct = "0"; // Asumido como 0
+            String datecStr = datec.getText();
+            double Monto = 0;
+
+            try {
+                Monto = Double.parseDouble(txtMonto.getText());
+                if (Monto < 0) {
+                    JOptionPane.showMessageDialog(null, "El monto no puede ser menor a 0");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Monto debe ser un número válido");
+                return;
+            }
+
+            String cabecera = Documentos + ";" + datecStr + ";" + tipoDocumento + ";" + Descripcion + ";" + User + ";" + Monto + ";" + status + ";" + dateAct;
+
+            if (Modificar) {
+                JOptionPane.showMessageDialog(null, "No esta Diponible esta opcion");
+            } else {
+                archivos.Guardar(cabecera, cabeceraFile);
+                JOptionPane.showMessageDialog(null, "Cabecera Transaccion guardada exitosamente");
+            }
+
+            String secuenciaDoc = obtenerSecuenciaDocumento(tipoDocumento);  // Obtener la secuencia incrementada
+
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int rowCount = model.getRowCount();
+            
+            for (int row = 0; row < rowCount; row++) {
+                if (!procesarFila(model, row, secuenciaDoc, detalleFile)) {
+                    return; 
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Transacciones Guardada con exito.");
+             limpiarCampos();
+        }
+    }
+    
+    private boolean procesarFila(DefaultTableModel model, int row, String secuenciaDoc, File detalleFile) {
+        // Obtener los valores de la fila actual
+        String numeroDocumento = txtDocumentos.getText();
+        String cuentaContable = (String) model.getValueAt(row, 0);        
+        String origen = (String) model.getValueAt(row, 3);        
+        String debitoval = (String) model.getValueAt(row, 4);        
+        String creditoval = (String) model.getValueAt(row, 5);        
+        String comentario = (String) model.getValueAt(row, 5);       
+
+        if (numeroDocumento == null || numeroDocumento.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Los campos de número de documento, débito y crédito no pueden estar vacíos.");
+            return false;
+        }
+
+            double debitoValue = Double.parseDouble(debitoval);
+            double creditoValue = Double.parseDouble(creditoval);
+
+            if (debitoValue < 0) {
+                JOptionPane.showMessageDialog(null, "El valor de débito no puede ser negativo.");
+                return false;
+            }
+            if (creditoValue < 0) {
+                JOptionPane.showMessageDialog(null, "El valor de crédito no puede ser negativo.");
+                return false;
+            }
+
+            String detalleTransaccion = numeroDocumento + ";" + secuenciaDoc + ";" + cuentaContable + ";" + debitoValue + ";" + creditoValue + ";" + comentario;
+            Archivos archivos = new Archivos(); 
+            archivos.Guardar(detalleTransaccion, detalleFile); 
+            return true;
+    }
+    
+     private boolean validarCuentaEnCatalogo(String cuentaContable) {
+        File file = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] campos = linea.split(";");
+                if (campos[0].equals(cuentaContable)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el catálogo de cuentas");
+        }
+        return false;
+    }
+     
+    private String obtenerSecuenciaDocumento(String tipoDocumento) {
+        String prefijo = "";
+        switch (tipoDocumento) {
+            case "Factura" -> prefijo = "Fact";
+            case "Ajuste" -> prefijo = "Ajus";
+            case "DocumentoInterno" -> prefijo = "DocInt";
+            default -> {
+                return "00";
+            }
+        }
+
+        int secuencia = obtenerUltimaSecuencia(tipoDocumento) + 1;
+        return prefijo + "-" + String.format("%02d", secuencia);  
+    }
+
+    private int obtenerUltimaSecuencia(String tipoDocumento) {
+        File file = new File("C:\\Users\\admin\\Desktop\\Transacción_Contable.txt");
+        int ultimaSecuencia = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] campos = linea.split(";");
+                if (campos[1].startsWith(tipoDocumento)) {
+                    int secuencia = Integer.parseInt(campos[1].split("-")[1]);
+                    if (secuencia > ultimaSecuencia) {
+                        ultimaSecuencia = secuencia;
+                    }
+                }
+            }
+        } catch (IOException e) {
+        }
+        return ultimaSecuencia;
+    }
+    
+    private boolean validarCampos() {
+        if (txtDocumentos.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo de Documento no puede estar vacío.");
+            return false;
+        }
+
+        if (txtDescripcion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "La descripción no puede estar vacía.");
+            return false;
+        }
+
+        if (txtuser.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo de usuario no puede estar vacío.");
+            return false;
+        }
+
+        try {
+            double monto = Double.parseDouble(txtMonto.getText());
+            if (monto < 0) {
+                JOptionPane.showMessageDialog(null, "El monto no puede ser menor a 0.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El monto debe ser un número válido.");
+            return false;
+        }
+        
+        try {
+            double monto = Double.parseDouble(txtMonto.getText());
+            double sumDebitos = Double.parseDouble(sumDebito.getText());  
+            double sumCreditos = Double.parseDouble(sumCredito.getText());  
+
+            if (sumDebitos + sumCreditos > monto) {
+                JOptionPane.showMessageDialog(null, "La suma de Débitos y Créditos no puede ser mayor al monto.");
+                return false;
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Todos los campos deben contener numeros válidos.");
+            return false;
+        }
+
+        try {
+            double credito = Double.parseDouble(txtCredito.getText().isEmpty() ? "0" : txtCredito.getText());
+            double monto = Double.parseDouble(txtMonto.getText());
+            if (credito > monto) {
+                JOptionPane.showMessageDialog(null, "El valor de crédito no puede ser mayor al monto.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor de crédito debe ser un número válido.");
+            return false;
+        }
+
+        try {
+            double debito = Double.parseDouble(txtDebito.getText().isEmpty() ? "0" : txtDebito.getText());
+            double monto = Double.parseDouble(txtMonto.getText());
+            if (debito > monto) {
+                JOptionPane.showMessageDialog(null, "El valor de débito no puede ser mayor al monto.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor de débito debe ser un número válido.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void limpiarCampos() {
+        txtDocumentos.setText("");
+        txtDescripcion.setText("");
+        txtMonto.setText("");
+        txtCuenta.setText("");
+        txtDebito.setText("");
+        txtCredito.setText("");
+        TipoDocumentoComboBox.setSelectedIndex(0);
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);  
+    }
     /**
      * @param args the command line arguments
      */
@@ -347,38 +1125,42 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             }
         });
     }
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton Addbt;
+    private javax.swing.JButton Addbt1;
+    private javax.swing.JComboBox<String> TipoDocumentoComboBox;
+    private javax.swing.JTextField datec;
+    private javax.swing.JLabel ede;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
-    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JToggleButton jToggleButton4;
+    private javax.swing.JLabel sdvdsdv;
+    private javax.swing.JTextField status;
+    private javax.swing.JTextField sumCredito;
+    private javax.swing.JTextField sumDebito;
+    private javax.swing.JTextField txtCredito;
+    private javax.swing.JTextField txtCuenta;
+    private javax.swing.JTextField txtDebito;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtDocumentos;
+    private javax.swing.JTextField txtMonto;
+    private javax.swing.JTextField txtuser;
+    private javax.swing.JLabel xxxx;
     // End of variables declaration//GEN-END:variables
 }
