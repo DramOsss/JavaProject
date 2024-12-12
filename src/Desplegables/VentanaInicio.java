@@ -62,7 +62,6 @@ public class VentanaInicio extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         menProcesos = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu12 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -174,10 +173,6 @@ public class VentanaInicio extends javax.swing.JFrame {
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-diario-32.png"))); // NOI18N
         jMenuItem4.setText("Cierre Diario por Fechas");
         menProcesos.add(jMenuItem4);
-
-        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-fiscal-32.png"))); // NOI18N
-        jMenuItem5.setText("Cierre de fin de año fiscal");
-        menProcesos.add(jMenuItem5);
 
         jMenuBar1.add(menProcesos);
         menProcesos.getAccessibleContext().setAccessibleDescription("");
@@ -342,7 +337,6 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;

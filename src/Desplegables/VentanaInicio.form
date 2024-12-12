@@ -172,14 +172,6 @@
                 <Property name="text" type="java.lang.String" value="Cierre Diario por Fechas"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Iconos/icons8-fiscal-32.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Cierre de fin de a&#xf1;o fiscal"/>
-              </Properties>
-            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu12">

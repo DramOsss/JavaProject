@@ -409,6 +409,7 @@ public class Usuarios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "El Email no debe estar vacío");
             txtemail.grabFocus();
             return false;
+        
 //        } else if (!esEmailValido(txtemail.getText())) { 
 ////            JOptionPane.showMessageDialog(null, "El email no es válido");
 ////            txtemail.grabFocus();

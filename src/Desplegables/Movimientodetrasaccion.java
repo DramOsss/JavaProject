@@ -4,31 +4,21 @@
  */
 package Desplegables;
 
-import static Desplegables.Catalogodecuentas.Lantigua;
 import Desplegables.Usuarios;
 import ManejoArchivos.Archivos;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import login.RegistroL;
@@ -40,6 +30,9 @@ import login.RegistroL;
 public class Movimientodetrasaccion extends javax.swing.JFrame {
 
     private boolean Modificar;
+    private String cabecera_Antigua;
+    private int ultimaSecuenciaGenerada = 0;
+    private String detalle_Antigua;
 
     /**
      * Creates new form Movimientodetrasaccion
@@ -52,8 +45,6 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         boolean Modificar = false;
         
     }
-    
-    
     
 
     /**
@@ -199,6 +190,8 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
         jLabel4.setText("Monto");
 
+        txtMonto.setEnabled(false);
+        txtMonto.setFocusable(false);
         txtMonto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtMontoKeyTyped(evt);
@@ -265,7 +258,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             }
         });
 
-        TipoDocumentoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Factura", "Ajuste", "Documento Interno", "Cheque" }));
+        TipoDocumentoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Deposito", "Factura", "Cheque", "Transferencia", "Nota de Debito", "Nota de Credito", "Ajuste", "Documento", " " }));
 
         jLabel5.setText("Cuenta");
 
@@ -277,7 +270,15 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
         jLabel6.setText("Credito");
 
+        txtCredito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCreditoActionPerformed(evt);
+            }
+        });
         txtCredito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCreditoKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCreditoKeyTyped(evt);
             }
@@ -286,6 +287,9 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         jLabel7.setText("Debito");
 
         txtDebito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDebitoKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtDebitoKeyTyped(evt);
             }
@@ -342,13 +346,13 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                         .addGap(22, 22, 22))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(Addbt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Addbt1))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(73, 73, 73)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
                                 .addComponent(txtCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel7)
@@ -375,7 +379,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(jLabel4)
-                        .addGap(38, 38, 38)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(sumDebito, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -606,9 +610,9 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             while ((lineaActual = br.readLine()) != null && !find) {
                 String[] datos = lineaActual.split(";");
 
-                if (datos.length >= 8) {  // Asegurarse de que hay suficientes columnas
-                    String auxNumCuenta = datos[0];  
-                    if (numDocuments_u.equals(auxNumCuenta)) {
+                if (datos.length >= 8) {  
+                    String auxDoc = datos[0];  
+                    if (numDocuments_u.equals(auxDoc)) {
                         find = true;
 
                         // Obtener los detalles de la transacción
@@ -620,6 +624,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                         String auxStatus = datos[6];
                         String auxFechaActualizacion = datos[7];
 
+                        
                         // Establecer los valores en los campos de texto de la interfaz
                         datec.setText(auxFecha);
                         TipoDocumentoComboBox.setSelectedItem(auxTipoDocumento);
@@ -630,6 +635,8 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                         {
                             status.setText("Sin Modificar");}
 
+                        cabecera_Antigua =  numDocuments_u + ";" + auxFecha + ";" + auxTipoDocumento + ";" + auxDescripcion + ";" + auxUsuario + ";" + auxMonto + ";" + auxStatus + ";" + auxFechaActualizacion;
+                         
                         buscarDetallesTransaccion(numDocuments_u);
                     }
                 }
@@ -659,35 +666,42 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             boolean found = false;
 
             while ((lineaActual = br.readLine()) != null) {
+                System.out.println("Leyendo línea: " + lineaActual);
                 String[] datos = lineaActual.split(";");
 
-                if (datos.length >= 8) { 
-                    String auxnumDocuments = datos[0];
-                    if (numDocuments_u.equals(auxnumDocuments)) {
-                        found = true;
+                if (datos.length <= 5) {
+                    System.out.println("Línea ignorada por formato incorrecto: " + lineaActual);
+                    continue; // Saltar líneas incorrectas
+                }
 
-                        String auxSecuencia = datos[1];
-                        String auxCuenta = datos[2];
+                String auxnumDocuments = datos[0];
+                System.out.println("Comparando documento: " + numDocuments_u + " con " + auxnumDocuments);
 
-                        String value = validarExistencia(auxCuenta); 
-                        String[] valueParts = value.split(", ");  // Dividir la cadena en partes (descripción y origen)
-                        String auxDescripcion = valueParts[0];
-                        String origen = valueParts.length > 1 ? valueParts[1] : "";  // Si no hay origen, asignar "Desconocido"
+                if (numDocuments_u.trim().equals(auxnumDocuments.trim())) {
+                    found = true;
+                    Modificar = true;
 
-                        String auxDebito = datos[3];
-                        String auxCredito = datos[4];
-                        String auxComentario = datos[5];
-
-                        // Establecer las columnas si no se han establecido
-                        if (model.getColumnCount() == 0) {
-                            model.setColumnIdentifiers(new Object[]{
-                                "Numero de Cuenta", "Descripcion", "Secuencia", "Origen", "Debito", "Credito", "Comentario"
-                            });
-                        }
-                        model.addRow(new Object[]{
-                            auxnumDocuments, auxDescripcion, auxSecuencia, origen, auxDebito, auxCredito, auxComentario
+                    String auxCuenta = datos[1];
+                    String auxSecuencia = datos[2];
+                    String value = validarExistencia(auxCuenta);
+                    String auxDescripcion = value;
+                    String origen = datos[3];
+                    String auxDebito = datos[4];
+                    String auxCredito = datos[5];
+                    String comentario = datos[6];
+                    String auxComentario = comentario.isEmpty() ? "0" : comentario; 
+                    
+                    detalle_Antigua = auxCuenta + ";" + auxCuenta + ";" + auxSecuencia + ";" + origen + ";" + auxDebito + ";" + auxCredito + ";" + auxComentario;
+                    
+                    if (model.getColumnCount() == 0) {
+                        model.setColumnIdentifiers(new Object[]{
+                            "Numero de Cuenta", "Descripcion", "Secuencia", "Origen", "Debito", "Credito", "Comentario"
                         });
                     }
+                    model.addRow(new Object[]{
+                        auxCuenta, auxDescripcion, auxSecuencia, origen, auxDebito, auxCredito, auxComentario
+                    
+                    });
                 }
             }
 
@@ -700,6 +714,22 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al leer el archivo de detalles: " + e.getMessage());
         }
     }//GEN-LAST:event_txtDocumentosFocusLost
+
+    private void txtDebitoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebitoKeyReleased
+        if (!txtDebito.getText().isEmpty()){
+            txtCredito.setEnabled(false);
+        }
+    }//GEN-LAST:event_txtDebitoKeyReleased
+
+    private void txtCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCreditoActionPerformed
+
+    }//GEN-LAST:event_txtCreditoActionPerformed
+
+    private void txtCreditoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCreditoKeyReleased
+     if (!txtCredito.getText().isEmpty()){
+             txtDebito.setEnabled(false);
+        }
+    }//GEN-LAST:event_txtCreditoKeyReleased
     
     private String validarExistencia(String cuentaContable) {
       File file = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
@@ -708,10 +738,8 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
           while ((linea = reader.readLine()) != null) {
               String[] campos = linea.split(";");
               if (campos[0].equals(cuentaContable)) {
-                  // Si la cuenta existe, obtener la descripción y el origen
                   String descripcion = campos[1];
-                  String origen = validarGrupoCuenta(campos[5]);  // Origen basado en el campo 5
-                  return descripcion + ", " + origen;  // Devuelve la descripción y el origen concatenados
+                  return descripcion;
               }
           }
       } catch (IOException e) {
@@ -805,7 +833,6 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         model.setColumnIdentifiers(new Object[]{
             "Numero de Cuenta", "Descripcion", "Secuencia", "Origen", "Debito", "Credito", "Comentario"
         });
-
         model.addRow(new Object[]{numCuenta, descripcion, auxSecuencia, auxGrupoCuenta, auxDebito, auxCredito, ""});
 
         txtCuenta.setText("");
@@ -861,6 +888,9 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         // Actualizamos las etiquetas con los totales
         sumDebito.setText(String.valueOf(totalDebito));
         sumCredito.setText(String.valueOf(totalCredito));
+        
+        if((totalDebito - totalCredito) == 0.0)
+            txtMonto.setText(String.valueOf(totalDebito));
     }
 
 
@@ -905,7 +935,8 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             String cabecera = Documentos + ";" + datecStr + ";" + tipoDocumento + ";" + Descripcion + ";" + User + ";" + Monto + ";" + status + ";" + dateAct;
 
             if (Modificar) {
-                JOptionPane.showMessageDialog(null, "No esta Diponible esta opcion");
+                archivos.Guardar(cabecera_Antigua, cabeceraFile);
+                JOptionPane.showMessageDialog(null, "Cabecera Transaccion actualizada exitosamente");
             } else {
                 archivos.Guardar(cabecera, cabeceraFile);
                 JOptionPane.showMessageDialog(null, "Cabecera Transaccion guardada exitosamente");
@@ -935,12 +966,14 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         String origen = (String) model.getValueAt(row, 3);        
         String debitoval = (String) model.getValueAt(row, 4);        
         String creditoval = (String) model.getValueAt(row, 5);        
-        String comentario = (String) model.getValueAt(row, 5);       
+        String comentario = (String) model.getValueAt(row, 6);       
 
         if (numeroDocumento == null || numeroDocumento.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Los campos de número de documento, débito y crédito no pueden estar vacíos.");
             return false;
         }
+        
+       String auxComentario = comentario.isEmpty() ? "0" : comentario ;
 
             double debitoValue = Double.parseDouble(debitoval);
             double creditoValue = Double.parseDouble(creditoval);
@@ -954,9 +987,12 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                 return false;
             }
 
-            String detalleTransaccion = numeroDocumento + ";" + secuenciaDoc + ";" + cuentaContable + ";" + debitoValue + ";" + creditoValue + ";" + comentario;
+            String detalleTransaccion = numeroDocumento + ";" + cuentaContable + ";" + secuenciaDoc + ";" + origen + ";" + debitoValue + ";" + creditoValue + ";" + auxComentario;
             Archivos archivos = new Archivos(); 
-            archivos.Guardar(detalleTransaccion, detalleFile); 
+            if (Modificar) {
+                archivos.Guardar(detalle_Antigua, detalleFile);
+                JOptionPane.showMessageDialog(null, "Cabecera Transaccion actualizada exitosamente");
+            } else{archivos.Guardar(detalleTransaccion, detalleFile); }
             return true;
     }
     
@@ -977,39 +1013,69 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
     }
      
     private String obtenerSecuenciaDocumento(String tipoDocumento) {
-        String prefijo = "";
-        switch (tipoDocumento) {
-            case "Factura" -> prefijo = "Fact";
-            case "Ajuste" -> prefijo = "Ajus";
-            case "DocumentoInterno" -> prefijo = "DocInt";
-            default -> {
-                return "00";
-            }
-        }
+    String prefijo = switch (tipoDocumento) {
+        case "Deposito" -> "Dep";
+        case "Factura" -> "Fact";
+        case "Cheque" -> "Chq";
+        case "Transferencia" -> "Trans";
+        case "Nota de Debito" -> "ND";
+        case "Nota de Credito" -> "NC";
+        case "Ajuste" -> "Ajus";
+        case "Documento" -> "Doc";
+        default -> "00";
+    };
 
-        int secuencia = obtenerUltimaSecuencia(tipoDocumento) + 1;
-        return prefijo + "-" + String.format("%02d", secuencia);  
+    if ("00".equals(prefijo)) {
+        return "00"; // Tipo de documento inválido
     }
 
-    private int obtenerUltimaSecuencia(String tipoDocumento) {
+    // Buscar la secuencia más alta en el archivo si no se ha generado ninguna previamente
+    if (ultimaSecuenciaGenerada == 0) {
+        ultimaSecuenciaGenerada = obtenerUltimaSecuencia(prefijo);
+    }
+
+    // Incrementar la secuencia para el siguiente documento
+    ultimaSecuenciaGenerada++;
+    return prefijo + "-" + String.format("%02d", ultimaSecuenciaGenerada);  
+}
+
+    private int obtenerUltimaSecuencia(String prefijoDocumento) {
         File file = new File("C:\\Users\\admin\\Desktop\\Transacción_Contable.txt");
-        int ultimaSecuencia = 0;
+        int secuenciaMaxima = 0;
+
+        if (!file.exists()) {
+            // Si el archivo no existe, retornar 0 como base inicial
+            return secuenciaMaxima;
+        }
+
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String linea;
+
             while ((linea = reader.readLine()) != null) {
+                // Dividir la línea en campos separados por ';'
                 String[] campos = linea.split(";");
-                if (campos[1].startsWith(tipoDocumento)) {
-                    int secuencia = Integer.parseInt(campos[1].split("-")[1]);
-                    if (secuencia > ultimaSecuencia) {
-                        ultimaSecuencia = secuencia;
+                if (campos.length > 1) {
+                    String documento = campos[1].trim(); // Obtener el campo del documento
+
+                    // Verificar si el documento comienza con el prefijo
+                    if (documento.startsWith(prefijoDocumento + "-")) {
+                        try {
+                            // Extraer la secuencia después del prefijo
+                            String secuenciaStr = documento.substring(prefijoDocumento.length() + 1); // Ejemplo: "Dep-01" => "01"
+                            int secuencia = Integer.parseInt(secuenciaStr);
+                            secuenciaMaxima = Math.max(secuenciaMaxima, secuencia);
+                        } catch (NumberFormatException e) {
+                            System.err.println("Error al parsear la secuencia: " + e.getMessage());
+                        }
                     }
                 }
             }
         } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
         }
-        return ultimaSecuencia;
+
+        return secuenciaMaxima;
     }
-    
     private boolean validarCampos() {
         if (txtDocumentos.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "El campo de Documento no puede estar vacío.");
@@ -1026,56 +1092,25 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             return false;
         }
 
-        try {
-            double monto = Double.parseDouble(txtMonto.getText());
-            if (monto < 0) {
-                JOptionPane.showMessageDialog(null, "El monto no puede ser menor a 0.");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El monto debe ser un número válido.");
-            return false;
-        }
+        
         
         try {
-            double monto = Double.parseDouble(txtMonto.getText());
+            //double monto = Double.parseDouble(txtMonto.getText());
             double sumDebitos = Double.parseDouble(sumDebito.getText());  
             double sumCreditos = Double.parseDouble(sumCredito.getText());  
 
-            if (sumDebitos + sumCreditos > monto) {
-                JOptionPane.showMessageDialog(null, "La suma de Débitos y Créditos no puede ser mayor al monto.");
+            if (sumDebitos != sumCreditos) {
+                JOptionPane.showMessageDialog(null, "La suma de Débitos y Créditos no pueden ser distintos");
                 return false;
             }
+            
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Todos los campos deben contener numeros válidos.");
             return false;
         }
 
-        try {
-            double credito = Double.parseDouble(txtCredito.getText().isEmpty() ? "0" : txtCredito.getText());
-            double monto = Double.parseDouble(txtMonto.getText());
-            if (credito > monto) {
-                JOptionPane.showMessageDialog(null, "El valor de crédito no puede ser mayor al monto.");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El valor de crédito debe ser un número válido.");
-            return false;
-        }
-
-        try {
-            double debito = Double.parseDouble(txtDebito.getText().isEmpty() ? "0" : txtDebito.getText());
-            double monto = Double.parseDouble(txtMonto.getText());
-            if (debito > monto) {
-                JOptionPane.showMessageDialog(null, "El valor de débito no puede ser mayor al monto.");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El valor de débito debe ser un número válido.");
-            return false;
-        }
-
+        
         return true;
     }
 
@@ -1088,7 +1123,10 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         txtCredito.setText("");
         TipoDocumentoComboBox.setSelectedIndex(0);
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);  
+        model.setRowCount(0);
+        sumDebito.setText("0");
+        sumCredito.setText("0");
+        txtMonto.setText("0");
     }
     /**
      * @param args the command line arguments

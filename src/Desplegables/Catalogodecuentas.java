@@ -8,9 +8,11 @@ import Desplegables.Usuarios;
 import ManejoArchivos.Archivos;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -88,6 +90,7 @@ public class Catalogodecuentas extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         conciliableCheck = new javax.swing.JCheckBox();
         txtNcuenta = new javax.swing.JTextField();
+        deletebt1 = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -239,19 +242,27 @@ public class Catalogodecuentas extends javax.swing.JFrame {
         txtNcuenta.setEnabled(false);
         txtNcuenta.setFocusable(false);
 
+        deletebt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/icons8-cancelar-32.png"))); // NOI18N
+        deletebt1.setText("Eliminar");
+        deletebt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletebt1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtestado, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,6 +288,34 @@ public class Catalogodecuentas extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addComponent(txtdescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10))
+                                .addGap(5, 5, 5)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(GcuentaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(48, 48, 48)
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtNcuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(conciliableCheck))))
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(guardarbt)
+                                .addGap(25, 25, 25)
+                                .addComponent(deletebt1)
+                                .addGap(25, 25, 25)
+                                .addComponent(limpiarbt)
+                                .addGap(25, 25, 25)
+                                .addComponent(salirbt))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(5, 5, 5)
                                 .addComponent(txtCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -296,39 +335,11 @@ public class Catalogodecuentas extends javax.swing.JFrame {
                                 .addGap(108, 108, 108)
                                 .addComponent(txtPadre, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(5, 5, 5)
-                                .addComponent(txtdescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10))
-                                .addGap(5, 5, 5)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(GcuentaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(48, 48, 48)
-                                        .addComponent(jLabel5))
-                                    .addComponent(conciliableCheck))))
-                        .addContainerGap())))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtNcuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(guardarbt)
-                        .addGap(50, 50, 50)
-                        .addComponent(limpiarbt)
-                        .addGap(50, 50, 50)
-                        .addComponent(salirbt)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {guardarbt, limpiarbt, salirbt});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -393,12 +404,13 @@ public class Catalogodecuentas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtDebito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardarbt)
                     .addComponent(limpiarbt)
-                    .addComponent(salirbt))
-                .addGap(17, 17, 17))
+                    .addComponent(salirbt)
+                    .addComponent(deletebt1))
+                .addGap(16, 16, 16))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -406,9 +418,8 @@ public class Catalogodecuentas extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addGap(0, 6, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -529,8 +540,116 @@ public class Catalogodecuentas extends javax.swing.JFrame {
     }//GEN-LAST:event_TcuentaComboBoxItemStateChanged
 
     private void txtPadreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPadreFocusLost
-        
+        String cuentaPadre = txtPadre.getText(); // Obtener la cuenta padre ingresada
+        boolean cuentaEncontrada = false;
+        int nivel = 0;
+
+        try {
+            File file = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
+            if (!file.exists()) {
+                JOptionPane.showMessageDialog(null, "El catálogo de cuentas no existe.");
+                return;
+            }
+
+            try (Scanner read = new Scanner(file)) {
+                while (read.hasNextLine()) {
+                    String lineaActual = read.nextLine();
+
+                    // Dividir la línea en columnas utilizando ';' como delimitador
+                    String[] columnas = lineaActual.split(";");
+                    if (columnas.length < 4) {
+                        continue; // Ignorar líneas mal formadas
+                    }
+
+                    String cuentaActual = columnas[0].trim(); // Columna 0: Número de cuenta
+                    String nivelCuenta = columnas[3].trim(); // Columna 3: Nivel de la cuenta
+
+                    if (cuentaPadre.equals(cuentaActual)) { 
+                        cuentaEncontrada = true;
+                        nivel = Integer.parseInt(nivelCuenta);
+                    }
+                }
+            }
+            if (txtPadre.getText().isEmpty()){
+                txtNcuenta.setText("1");
+            }
+            
+            if (cuentaEncontrada) {
+                nivel += 1; 
+                txtNcuenta.setText(String.valueOf(nivel));
+            } else {
+                JOptionPane.showMessageDialog(null, "La cuenta padre no existe en el catálogo.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error: " + e.getMessage());
+        }
     }//GEN-LAST:event_txtPadreFocusLost
+
+    private void deletebt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebt1ActionPerformed
+       String cuentaAEliminar = numCuenta.getText(); // Obtener la cuenta a eliminar del campo de texto
+
+        File archivoOriginal = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
+        File archivoTemporal = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas_temp.txt");
+        int balance  = Integer.parseInt(txtBalance.getText());
+        
+        if (balance > 0) {
+            JOptionPane.showMessageDialog(null, "No se puede modificar o eliminar una cuenta si esta tiene balance.");
+            return;
+        }
+        boolean registroEliminado = false;
+
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivoOriginal));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(archivoTemporal))) {
+
+            String linea;
+
+            while ((linea = reader.readLine()) != null) {
+                // Dividir la línea en columnas por ';'
+                String[] columnas = linea.split(";");
+
+                // Verificar si el número de cuenta (columna 0) coincide con la cuenta a eliminar
+                if (columnas.length > 0 && columnas[0].trim().equals(cuentaAEliminar)) {
+                    registroEliminado = true; // Marca como eliminado
+                    continue; // Salta la escritura de esta línea en el archivo temporal
+                }
+
+                // Escribe todas las demás líneas en el archivo temporal
+                writer.write(linea);
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage());
+            return;
+        }
+
+        // Reemplazar el archivo original con el archivo temporal
+        if (registroEliminado) {
+            try {
+                // Eliminar el archivo original
+                if (!archivoOriginal.delete()) {
+                    JOptionPane.showMessageDialog(null, "No se pudo eliminar el archivo original.");
+                    return;
+                }
+
+                // Renombrar el archivo temporal
+                if (!archivoTemporal.renameTo(archivoOriginal)) {
+                    JOptionPane.showMessageDialog(null, "No se pudo renombrar el archivo temporal.");
+                    return;
+                }
+
+                JOptionPane.showMessageDialog(null, "Registro eliminado correctamente.");
+                limpiarbtActionPerformed(evt);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al actualizar el archivo: " + e.getMessage());
+            }
+        } else {
+            // Si no se encontró el registro, eliminar el archivo temporal
+            archivoTemporal.delete();
+            JOptionPane.showMessageDialog(null, "No se encontró la cuenta especificada.");
+        }
+    }//GEN-LAST:event_deletebt1ActionPerformed
     
     private void  ObtenerFechaHora() {
         LocalDateTime fechaHora = LocalDateTime.now();
@@ -718,6 +837,7 @@ public class Catalogodecuentas extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> TcuentaComboBox;
     private javax.swing.JCheckBox conciliableCheck;
     private javax.swing.JTextField date;
+    private javax.swing.JButton deletebt1;
     private javax.swing.JButton guardarbt;
     private javax.swing.JTextField hour;
     private javax.swing.JLabel jLabel1;
