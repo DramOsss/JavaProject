@@ -8,11 +8,15 @@ import Desplegables.Usuarios;
 import ManejoArchivos.Archivos;
 import java.awt.Font;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -31,8 +35,15 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
     private boolean Modificar;
     private String cabecera_Antigua;
-    private int ultimaSecuenciaGenerada = 0;
     private String detalle_Antigua;
+    private int ultimaSecuenciaDeposito = 0;
+    private int ultimaSecuenciaFactura = 0;
+    private int ultimaSecuenciaCheque = 0;
+    private int ultimaSecuenciaTransferencia = 0;
+    private int ultimaSecuenciaND = 0;
+    private int ultimaSecuenciaNC = 0;
+    private int ultimaSecuenciaAjuste = 0;
+    private int ultimaSecuenciaDocumento = 0;
 
     /**
      * Creates new form Movimientodetrasaccion
@@ -42,7 +53,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         ObtenerFechaHora();
         GetUser();
         status.setText("Creando");
-        boolean Modificar = false;
+        Modificar = false;
         
     }
     
@@ -258,10 +269,16 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             }
         });
 
-        TipoDocumentoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Deposito", "Factura", "Cheque", "Transferencia", "Nota de Debito", "Nota de Credito", "Ajuste", "Documento", " " }));
+        TipoDocumentoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Deposito", "Factura", "Cheque", "Transferencia", "Nota de Debito", "Nota de Credito", "Ajuste", "Documento" }));
+        TipoDocumentoComboBox.setToolTipText("");
 
         jLabel5.setText("Cuenta");
 
+        txtCuenta.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCuentaFocusGained(evt);
+            }
+        });
         txtCuenta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCuentaKeyTyped(evt);
@@ -270,15 +287,12 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
         jLabel6.setText("Credito");
 
-        txtCredito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCreditoActionPerformed(evt);
+        txtCredito.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCreditoFocusGained(evt);
             }
         });
         txtCredito.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtCreditoKeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCreditoKeyTyped(evt);
             }
@@ -286,10 +300,12 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
         jLabel7.setText("Debito");
 
-        txtDebito.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtDebitoKeyReleased(evt);
+        txtDebito.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDebitoFocusGained(evt);
             }
+        });
+        txtDebito.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtDebitoKeyTyped(evt);
             }
@@ -463,23 +479,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             return;
         }
 
-//        if(txtMonto.getText().isEmpty()) {
-//            JOptionPane.showMessageDialog(null, "El campo de monto no debe estar vacío");
-//            return;
-//        }
 
-//        double monto;
-//        try {
-//            monto = Double.parseDouble(txtMonto.getText());
-//            if(monto <= 0) {
-//                JOptionPane.showMessageDialog(null, "El monto debe ser un valor positivo");
-//                txtMonto.setText("0");
-//                return;
-//            }
-//        } catch (NumberFormatException e) {
-//            JOptionPane.showMessageDialog(null, "El campo monto debe ser un valor numérico válido");
-//            return;
-//        }
 
         double credito = 0;
         double debito = 0;
@@ -552,7 +552,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
          char c = evt.getKeyChar();
         if (!Character.isDigit(c)) {
             evt.consume();
-        }
+        }      
     }//GEN-LAST:event_txtCuentaKeyTyped
 
     private void txtDebitoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebitoKeyTyped
@@ -597,11 +597,14 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
   
         String numDocuments_u = txtDocumentos.getText();  
         boolean find = false;
+        
+        
 
         File file = new File("C:\\Users\\admin\\Desktop\\Cabecera_Transaccion_Contable.txt");
 
         if (!file.exists()) {
             JOptionPane.showMessageDialog(null, "El archivo Cabecera_Transaccion_Contable.txt no existe.");
+            Modificar = false;
             return; 
         }
 
@@ -610,10 +613,13 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             while ((lineaActual = br.readLine()) != null && !find) {
                 String[] datos = lineaActual.split(";");
 
-                if (datos.length >= 8) {  
+                if (datos.length >= 8) {
+                       
                     String auxDoc = datos[0];  
                     if (numDocuments_u.equals(auxDoc)) {
+                        limpiarCampos();
                         find = true;
+                        Modificar = true;
 
                         // Obtener los detalles de la transacción
                         String auxFecha = datos[1];
@@ -626,15 +632,31 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
                         
                         // Establecer los valores en los campos de texto de la interfaz
+                        txtDocumentos.setText(numDocuments_u);
                         datec.setText(auxFecha);
                         TipoDocumentoComboBox.setSelectedItem(auxTipoDocumento);
                         txtDescripcion.setText(auxDescripcion);
                         txtuser.setText(auxUsuario);
                         txtMonto.setText(auxMonto);
-                        if(auxStatus != "0")
+                        
+                        
+                        if("2".equals(auxStatus)){
+                            status.setText("Modificada");
+                            EnabledCampos();
+                        }
+                        else if("1".equals(auxStatus))
                         {
-                            status.setText("Sin Modificar");}
-
+                            status.setText("Sin Modificar");
+                            EnabledCamposTrue();
+                            
+                        }
+                        else if(status.getText().toUpperCase().equals("Creando".toUpperCase()))
+                        {
+                            status.setText("Creando");
+                            EnabledCamposTrue();
+                            
+                        }
+                        
                         cabecera_Antigua =  numDocuments_u + ";" + auxFecha + ";" + auxTipoDocumento + ";" + auxDescripcion + ";" + auxUsuario + ";" + auxMonto + ";" + auxStatus + ";" + auxFechaActualizacion;
                          
                         buscarDetallesTransaccion(numDocuments_u);
@@ -644,6 +666,20 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
             if (!find) {
                 JOptionPane.showMessageDialog(null, "No se encontró la cuenta en el archivo.");
+                EnabledCamposTrue();
+                txtDescripcion.setText("");
+                Modificar = false;
+                txtCuenta.setText("");
+                txtDebito.setText("");
+                txtCredito.setText("");
+                TipoDocumentoComboBox.setSelectedIndex(0);
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+                sumDebito.setText("0");
+                sumCredito.setText("0");
+                txtMonto.setText("0");
+                status.setText("Creando");
+              
             }
 
         } catch (IOException e) {
@@ -671,7 +707,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
                 if (datos.length <= 5) {
                     System.out.println("Línea ignorada por formato incorrecto: " + lineaActual);
-                    continue; // Saltar líneas incorrectas
+                    continue; 
                 }
 
                 String auxnumDocuments = datos[0];
@@ -691,8 +727,6 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                     String comentario = datos[6];
                     String auxComentario = comentario.isEmpty() ? "0" : comentario; 
                     
-                    detalle_Antigua = auxCuenta + ";" + auxCuenta + ";" + auxSecuencia + ";" + origen + ";" + auxDebito + ";" + auxCredito + ";" + auxComentario;
-                    
                     if (model.getColumnCount() == 0) {
                         model.setColumnIdentifiers(new Object[]{
                             "Numero de Cuenta", "Descripcion", "Secuencia", "Origen", "Debito", "Credito", "Comentario"
@@ -707,6 +741,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
 
             if (!found) {
                 JOptionPane.showMessageDialog(null, "No se encontraron detalles para este documento.");
+                 Modificar = false;
             }
 
         } catch (IOException e) {
@@ -715,21 +750,18 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtDocumentosFocusLost
 
-    private void txtDebitoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDebitoKeyReleased
-        if (!txtDebito.getText().isEmpty()){
+    private void txtCuentaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCuentaFocusGained
+       txtDebito.setEnabled(true);
+        txtCredito.setEnabled(true);
+    }//GEN-LAST:event_txtCuentaFocusGained
+
+    private void txtDebitoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDebitoFocusGained
             txtCredito.setEnabled(false);
-        }
-    }//GEN-LAST:event_txtDebitoKeyReleased
+    }//GEN-LAST:event_txtDebitoFocusGained
 
-    private void txtCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCreditoActionPerformed
-
-    }//GEN-LAST:event_txtCreditoActionPerformed
-
-    private void txtCreditoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCreditoKeyReleased
-     if (!txtCredito.getText().isEmpty()){
-             txtDebito.setEnabled(false);
-        }
-    }//GEN-LAST:event_txtCreditoKeyReleased
+    private void txtCreditoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCreditoFocusGained
+        txtDebito.setEnabled(false);
+    }//GEN-LAST:event_txtCreditoFocusGained
     
     private String validarExistencia(String cuentaContable) {
       File file = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
@@ -774,8 +806,8 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                         String auxGrupoCuenta = datos[5];
                         String auxTipoDocumento = String.valueOf(TipoDocumentoComboBox.getSelectedItem());
                         String origen = validarGrupoCuenta(auxGrupoCuenta);
-                        String auxDebito = txtDebito.getText() ;  // Débito
-                        String auxCredito = txtCredito.getText(); // Crédito
+                        String auxDebito = txtDebito.getText(); 
+                        String auxCredito = txtCredito.getText(); 
                         String auxSecuencia = obtenerSecuenciaDocumento(auxTipoDocumento);
 
                         if (auxDebito.isEmpty())
@@ -790,7 +822,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                             return; 
                         }
                         
-                        if (auxtCuenta.equals("General")) {
+                        if (auxtCuenta.toUpperCase().equals("General".toUpperCase())) {
                             JOptionPane.showMessageDialog(null, "Una cuenta general no debe tener movimiento.");
                             return; 
                         }
@@ -916,8 +948,8 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             String tipoDocumento = String.valueOf(TipoDocumentoComboBox.getSelectedItem());
             String Descripcion = txtDescripcion.getText();
             String User = txtuser.getText();
-            String status = "1";  // Asumido como 1
-            String dateAct = "0"; // Asumido como 0
+            String status = "1";  
+            String dateAct = "0"; 
             String datecStr = datec.getText();
             double Monto = 0;
 
@@ -935,21 +967,18 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             String cabecera = Documentos + ";" + datecStr + ";" + tipoDocumento + ";" + Descripcion + ";" + User + ";" + Monto + ";" + status + ";" + dateAct;
 
             if (Modificar) {
-                archivos.Guardar(cabecera_Antigua, cabeceraFile);
+                archivos.ModificarArchivo(cabecera_Antigua, cabecera , cabeceraFile);
                 JOptionPane.showMessageDialog(null, "Cabecera Transaccion actualizada exitosamente");
             } else {
                 archivos.Guardar(cabecera, cabeceraFile);
                 JOptionPane.showMessageDialog(null, "Cabecera Transaccion guardada exitosamente");
             }
 
-            String secuenciaDoc = obtenerSecuenciaDocumento(tipoDocumento);  // Obtener la secuencia incrementada
-
-
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             int rowCount = model.getRowCount();
             
             for (int row = 0; row < rowCount; row++) {
-                if (!procesarFila(model, row, secuenciaDoc, detalleFile)) {
+                if (!procesarFila(model, row,detalleFile)) {
                     return; 
                 }
             }
@@ -959,10 +988,11 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         }
     }
     
-    private boolean procesarFila(DefaultTableModel model, int row, String secuenciaDoc, File detalleFile) {
+    private boolean procesarFila(DefaultTableModel model, int row, File detalleFile) {
         // Obtener los valores de la fila actual
         String numeroDocumento = txtDocumentos.getText();
         String cuentaContable = (String) model.getValueAt(row, 0);        
+        String secuenciaDoc = (String) model.getValueAt(row, 2);        
         String origen = (String) model.getValueAt(row, 3);        
         String debitoval = (String) model.getValueAt(row, 4);        
         String creditoval = (String) model.getValueAt(row, 5);        
@@ -990,10 +1020,69 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             String detalleTransaccion = numeroDocumento + ";" + cuentaContable + ";" + secuenciaDoc + ";" + origen + ";" + debitoValue + ";" + creditoValue + ";" + auxComentario;
             Archivos archivos = new Archivos(); 
             if (Modificar) {
-                archivos.Guardar(detalle_Antigua, detalleFile);
-                JOptionPane.showMessageDialog(null, "Cabecera Transaccion actualizada exitosamente");
+                String numDocuments_u = txtDocumentos.getText();
+                List<String> nuevosDetalles = obtenerNuevosDetalles(model, numDocuments_u);
+                modificarDetallesTransaccion(numDocuments_u, nuevosDetalles);
             } else{archivos.Guardar(detalleTransaccion, detalleFile); }
             return true;
+    }
+    
+    private void modificarDetallesTransaccion(String numDocuments_u, List<String> nuevosDetalles) {
+        File detalleFile = new File("C:\\Users\\admin\\Desktop\\Transaccion_Contable.txt");
+        if (!detalleFile.exists()) {
+            JOptionPane.showMessageDialog(null, "El archivo Transaccion_Contable.txt no existe.");
+            return;
+        }
+
+        List<String> todasLasLineas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(detalleFile))) {
+            String lineaActual;
+            while ((lineaActual = br.readLine()) != null) {
+                String[] datos = lineaActual.split(";");
+                if (datos.length > 0 && !datos[0].trim().equals(numDocuments_u.trim())) {
+                    // Mantener líneas no relacionadas con el documento actual
+                    todasLasLineas.add(lineaActual);
+                }
+            }
+        } catch (IOException e) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, "Error al leer el archivo de detalles", e);
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo de detalles: " + e.getMessage());
+            return;
+        }
+
+        // Agregar los nuevos detalles al conjunto de líneas
+        todasLasLineas.addAll(nuevosDetalles);
+
+        // Sobrescribir el archivo con las líneas actualizadas
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(detalleFile))) {
+            for (String linea : todasLasLineas) {
+                bw.write(linea);
+                bw.newLine();
+            }
+            JOptionPane.showMessageDialog(null, "Detalles actualizados exitosamente.");
+        } catch (IOException e) {
+            Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, "Error al escribir en el archivo de detalles", e);
+            JOptionPane.showMessageDialog(null, "Error al escribir en el archivo de detalles: " + e.getMessage());
+        }
+    }
+    
+    private List<String> obtenerNuevosDetalles(DefaultTableModel model, String numDocuments_u) {
+        List<String> nuevosDetalles = new ArrayList<>();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String cuentaContable = (String) model.getValueAt(i, 0);
+            String descripcion = (String) model.getValueAt(i, 1);
+            String secuencia = (String) model.getValueAt(i, 2);
+            String origen = (String) model.getValueAt(i, 3);
+            String debito = (String) model.getValueAt(i, 4);
+            String credito = (String) model.getValueAt(i, 5);
+            String comentario = (String) model.getValueAt(i, 6);
+            String auxComentario = (comentario == null || comentario.isEmpty()) ? "0" : comentario;
+
+            // Crear la línea de detalle en formato esperado
+            String linea = numDocuments_u + ";" + cuentaContable + ";" + secuencia + ";" + origen + ";" + debito + ";" + credito + ";" + auxComentario;
+            nuevosDetalles.add(linea);
+        }
+        return nuevosDetalles;
     }
     
      private boolean validarCuentaEnCatalogo(String cuentaContable) {
@@ -1014,33 +1103,60 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
      
     private String obtenerSecuenciaDocumento(String tipoDocumento) {
     String prefijo = switch (tipoDocumento) {
-        case "Deposito" -> "Dep";
-        case "Factura" -> "Fact";
-        case "Cheque" -> "Chq";
-        case "Transferencia" -> "Trans";
-        case "Nota de Debito" -> "ND";
-        case "Nota de Credito" -> "NC";
-        case "Ajuste" -> "Ajus";
-        case "Documento" -> "Doc";
-        default -> "00";
-    };
+            case "Deposito" -> "Dep";
+            case "Factura" -> "Fact";
+            case "Cheque" -> "Chq";
+            case "Transferencia" -> "Trans";
+            case "Nota de Debito" -> "ND";
+            case "Nota de Credito" -> "NC";
+            case "Ajuste" -> "Ajus";
+            case "Documento" -> "Doc";
+            default -> "00";
+        };
 
-    if ("00".equals(prefijo)) {
-        return "00"; // Tipo de documento inválido
+        if ("00".equals(prefijo)) {
+            return "00"; // Tipo de documento inválido
+        }
+
+        // Determinar la última secuencia para este tipo de documento
+        int ultimaSecuencia;
+        switch (tipoDocumento) {
+            case "Deposito" -> ultimaSecuencia = ultimaSecuenciaDeposito;
+            case "Factura" -> ultimaSecuencia = ultimaSecuenciaFactura;
+            case "Cheque" -> ultimaSecuencia = ultimaSecuenciaCheque;
+            case "Transferencia" -> ultimaSecuencia = ultimaSecuenciaTransferencia;
+            case "Nota de Debito" -> ultimaSecuencia = ultimaSecuenciaND;
+            case "Nota de Credito" -> ultimaSecuencia = ultimaSecuenciaNC;
+            case "Ajuste" -> ultimaSecuencia = ultimaSecuenciaAjuste;
+            case "Documento" -> ultimaSecuencia = ultimaSecuenciaDocumento;
+            default -> throw new IllegalStateException("Tipo de documento desconocido");
+        }
+
+        // Si no hay una secuencia generada previamente, calcular desde el archivo
+        if (ultimaSecuencia == 0) {
+            ultimaSecuencia = obtenerUltimaSecuencia(prefijo);
+        }
+
+        // Incrementar la secuencia para el siguiente documento
+        ultimaSecuencia++;
+
+        // Guardar el nuevo valor en la variable correspondiente
+        switch (tipoDocumento) {
+            case "Deposito" -> ultimaSecuenciaDeposito = ultimaSecuencia;
+            case "Factura" -> ultimaSecuenciaFactura = ultimaSecuencia;
+            case "Cheque" -> ultimaSecuenciaCheque = ultimaSecuencia;
+            case "Transferencia" -> ultimaSecuenciaTransferencia = ultimaSecuencia;
+            case "Nota de Debito" -> ultimaSecuenciaND = ultimaSecuencia;
+            case "Nota de Credito" -> ultimaSecuenciaNC = ultimaSecuencia;
+            case "Ajuste" -> ultimaSecuenciaAjuste = ultimaSecuencia;
+            case "Documento" -> ultimaSecuenciaDocumento = ultimaSecuencia;
+        }
+
+        return prefijo + "-" + String.format("%02d", ultimaSecuencia);
     }
-
-    // Buscar la secuencia más alta en el archivo si no se ha generado ninguna previamente
-    if (ultimaSecuenciaGenerada == 0) {
-        ultimaSecuenciaGenerada = obtenerUltimaSecuencia(prefijo);
-    }
-
-    // Incrementar la secuencia para el siguiente documento
-    ultimaSecuenciaGenerada++;
-    return prefijo + "-" + String.format("%02d", ultimaSecuenciaGenerada);  
-}
 
     private int obtenerUltimaSecuencia(String prefijoDocumento) {
-        File file = new File("C:\\Users\\admin\\Desktop\\Transacción_Contable.txt");
+        File file = new File("C:\\Users\\admin\\Desktop\\Transaccion_Contable.txt");
         int secuenciaMaxima = 0;
 
         if (!file.exists()) {
@@ -1055,13 +1171,11 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                 // Dividir la línea en campos separados por ';'
                 String[] campos = linea.split(";");
                 if (campos.length > 1) {
-                    String documento = campos[1].trim(); // Obtener el campo del documento
+                    String documento = campos[2].trim(); // Cambia este índice según la columna del documento
 
-                    // Verificar si el documento comienza con el prefijo
                     if (documento.startsWith(prefijoDocumento + "-")) {
                         try {
-                            // Extraer la secuencia después del prefijo
-                            String secuenciaStr = documento.substring(prefijoDocumento.length() + 1); // Ejemplo: "Dep-01" => "01"
+                            String secuenciaStr = documento.substring(prefijoDocumento.length() + 1); // Extraer la parte numérica
                             int secuencia = Integer.parseInt(secuenciaStr);
                             secuenciaMaxima = Math.max(secuenciaMaxima, secuencia);
                         } catch (NumberFormatException e) {
@@ -1117,7 +1231,6 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
     private void limpiarCampos() {
         txtDocumentos.setText("");
         txtDescripcion.setText("");
-        txtMonto.setText("");
         txtCuenta.setText("");
         txtDebito.setText("");
         txtCredito.setText("");
@@ -1127,6 +1240,36 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
         sumDebito.setText("0");
         sumCredito.setText("0");
         txtMonto.setText("0");
+    }
+    
+    
+    private void EnabledCampos() {
+        txtDescripcion.setEnabled(false);
+        txtCuenta.setEnabled(false);
+        txtDebito.setEnabled(false);
+        txtCredito.setEnabled(false);
+        TipoDocumentoComboBox.setSelectedIndex(0);
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        sumDebito.setEnabled(false);
+        sumCredito.setEnabled(false);
+        txtMonto.setEnabled(false);
+        jToggleButton2.setEnabled(false);
+        Addbt1.setEnabled(false);
+        Addbt.setEnabled(false);
+        
+    }
+    
+    private void EnabledCamposTrue() {
+        txtDescripcion.setEnabled(true);
+        txtCuenta.setEnabled(true);
+        txtDebito.setEnabled(true);
+        txtCredito.setEnabled(true);
+        TipoDocumentoComboBox.setSelectedIndex(0);
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        jToggleButton2.setEnabled(true);
+        Addbt1.setEnabled(true);
+        Addbt.setEnabled(true);
+        
     }
     /**
      * @param args the command line arguments

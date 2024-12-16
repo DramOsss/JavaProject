@@ -4,13 +4,10 @@
  */
 package Desplegables;
 
-import Desplegables.Usuarios;
 import ManejoArchivos.Archivos;
-import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,8 +16,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 /**
@@ -127,6 +122,11 @@ public class Catalogodecuentas extends javax.swing.JFrame {
         });
 
         GcuentaComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Pasivo", "Capital", "Ingresos", "Costos", "Gastos" }));
+        GcuentaComboBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                GcuentaComboBoxFocusGained(evt);
+            }
+        });
 
         jLabel7.setText("Grupo cuenta");
 
@@ -216,9 +216,9 @@ public class Catalogodecuentas extends javax.swing.JFrame {
         jLabel4.setText("Tipo de cuenta");
 
         TcuentaComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "General", "Detalle" }));
-        TcuentaComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                TcuentaComboBoxItemStateChanged(evt);
+        TcuentaComboBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                TcuentaComboBoxFocusGained(evt);
             }
         });
 
@@ -308,6 +308,14 @@ public class Catalogodecuentas extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(TcuentaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(108, 108, 108)
+                                .addComponent(txtPadre, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(guardarbt)
                                 .addGap(25, 25, 25)
                                 .addComponent(deletebt1)
@@ -326,15 +334,7 @@ public class Catalogodecuentas extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(5, 5, 5)
-                                .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(6, 6, 6)
-                                .addComponent(TcuentaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(108, 108, 108)
-                                .addComponent(txtPadre, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
@@ -373,15 +373,15 @@ public class Catalogodecuentas extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(txtdescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(TcuentaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtPadre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(TcuentaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
@@ -495,8 +495,8 @@ public class Catalogodecuentas extends javax.swing.JFrame {
             cPadre = txtPadre.getText();
             descrip = txtdescripcion.getText();            
             bal = txtBalance.getText().isEmpty() ? "0" : txtBalance.getText();
-            crd = txtCredito.getText().isEmpty() ? "0" : txtCredito.getText();
             deb = txtDebito.getText().isEmpty() ? "0" : txtDebito.getText();
+            crd = txtCredito.getText().isEmpty() ? "0" : txtCredito.getText();
             fecha = date.getText();
             hora = hour.getText();
             gCuenta = String.valueOf(GcuentaComboBox.getSelectedItem());
@@ -513,7 +513,7 @@ public class Catalogodecuentas extends javax.swing.JFrame {
                 return; 
             }
 
-            catalogo = numeroCuenta + ";" + descrip + ";" + tCuenta + ";" + nCuenta + ";" + cPadre + ";" + gCuenta + ";" + concilible + ";" + fecha + ";" + hora + ";" + bal + ";" + crd + ";" + deb;
+            catalogo = numeroCuenta + ";" + descrip + ";" + tCuenta + ";" + nCuenta + ";" + cPadre + ";" + gCuenta + ";" + concilible + ";" + fecha + ";" + hora + ";" + bal + ";" + deb + ";" + crd;
 
             if (Modificar) {
                 archivos.ModificarArchivo(Lantigua, catalogo, file);
@@ -535,13 +535,14 @@ public class Catalogodecuentas extends javax.swing.JFrame {
        this.dispose();
     }//GEN-LAST:event_salirbtActionPerformed
 
-    private void TcuentaComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_TcuentaComboBoxItemStateChanged
-          
-    }//GEN-LAST:event_TcuentaComboBoxItemStateChanged
-
     private void txtPadreFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPadreFocusLost
-        String cuentaPadre = txtPadre.getText(); // Obtener la cuenta padre ingresada
+        String cuentaPadre = txtPadre.getText().trim(); // Obtener la cuenta padre ingresada
+        if (cuentaPadre.isEmpty()) {
+            txtNcuenta.setText("1");
+        }
+
         boolean cuentaEncontrada = false;
+        String tipoCuenta = "";
         int nivel = 0;
 
         try {
@@ -554,39 +555,53 @@ public class Catalogodecuentas extends javax.swing.JFrame {
             try (Scanner read = new Scanner(file)) {
                 while (read.hasNextLine()) {
                     String lineaActual = read.nextLine();
-
-                    // Dividir la línea en columnas utilizando ';' como delimitador
                     String[] columnas = lineaActual.split(";");
-                    if (columnas.length < 4) {
-                        continue; // Ignorar líneas mal formadas
+
+                   if (columnas.length < 4) {
+                        continue; 
                     }
 
-                    String cuentaActual = columnas[0].trim(); // Columna 0: Número de cuenta
-                    String nivelCuenta = columnas[3].trim(); // Columna 3: Nivel de la cuenta
+                    String cuentaActual = columnas[0].trim();
+                    tipoCuenta = columnas[2].trim();
+                    String nivelCuenta = columnas[3].trim();
 
-                    if (cuentaPadre.equals(cuentaActual)) { 
+                    if (cuentaPadre.equals(cuentaActual)) {
                         cuentaEncontrada = true;
-                        nivel = Integer.parseInt(nivelCuenta);
+                        nivel = Integer.parseInt(nivelCuenta); // Convertir nivel a entero
+                        break; // Salir del bucle tras encontrar la cuenta
                     }
                 }
             }
-            if (txtPadre.getText().isEmpty()){
-                txtNcuenta.setText("1");
-            }
-            
+
             if (cuentaEncontrada) {
-                nivel += 1; 
-                txtNcuenta.setText(String.valueOf(nivel));
+                if ("Detalle".equalsIgnoreCase(tipoCuenta)) {
+                    JOptionPane.showMessageDialog(null, "La cuenta padre no debe ser de tipo 'Detalle'.");
+                    txtPadre.grabFocus();
+                    return;
+                }
+
+                nivel += 1; // Incrementar nivel
+                txtNcuenta.setText(String.valueOf(nivel)); // Mostrar nuevo nivel en txtNcuenta
             } else {
                 JOptionPane.showMessageDialog(null, "La cuenta padre no existe en el catálogo.");
             }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error al convertir el nivel de la cuenta: " + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo del catálogo: " + e.getMessage());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ocurrió un error: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Ocurrió un error inesperado: " + e.getMessage());
         }
     }//GEN-LAST:event_txtPadreFocusLost
 
     private void deletebt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebt1ActionPerformed
-       String cuentaAEliminar = numCuenta.getText(); // Obtener la cuenta a eliminar del campo de texto
+       
+        if (!txtBalance.getText().equals("0.0") || !txtDebito.getText().equals("0.0") || !txtCredito.getText().equals("0.0") )  {
+                JOptionPane.showMessageDialog(null, "No se elimina una cuenta con balance.");
+                return;
+        }
+        
+        String cuentaAEliminar = numCuenta.getText(); // Obtener la cuenta a eliminar del campo de texto
 
         File archivoOriginal = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
         File archivoTemporal = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas_temp.txt");
@@ -650,6 +665,55 @@ public class Catalogodecuentas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No se encontró la cuenta especificada.");
         }
     }//GEN-LAST:event_deletebt1ActionPerformed
+
+    private void GcuentaComboBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_GcuentaComboBoxFocusGained
+       String cuentaActual = numCuenta.getText().trim(); // Obtener el valor actual de txtCuenta
+        if (cuentaActual.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "La cuenta actual no es válida.");
+            txtdescripcion.grabFocus();
+            return;
+        }
+
+        boolean esPadre = false;
+
+        try {
+            File file = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
+            if (!file.exists()) {
+                JOptionPane.showMessageDialog(null, "El catálogo de cuentas no existe.");
+                return;
+            }
+
+            try (Scanner read = new Scanner(file)) {
+                while (read.hasNextLine() && !esPadre) {
+                    String lineaActual = read.nextLine();
+                    String[] columnas = lineaActual.split(";");
+
+                    if (columnas.length < 7) {
+                        continue; 
+                    }
+
+                    String cuentaPadre = columnas[4].trim(); 
+                    if (cuentaActual.equals(cuentaPadre)) {
+                        esPadre = true;
+                        break; 
+                    }
+                }
+            }
+            
+            if (esPadre) {
+                JOptionPane.showMessageDialog(null, "La cuenta actual es un padre de otra cuenta. No se puede realizar esta acción.");
+                conciliableCheck.grabFocus();
+                return;
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo del catálogo: " + e.getMessage());
+            return;
+        }
+    }//GEN-LAST:event_GcuentaComboBoxFocusGained
+
+    private void TcuentaComboBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TcuentaComboBoxFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TcuentaComboBoxFocusGained
     
     private void  ObtenerFechaHora() {
         LocalDateTime fechaHora = LocalDateTime.now();
