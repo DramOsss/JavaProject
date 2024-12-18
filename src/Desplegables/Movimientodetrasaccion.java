@@ -515,16 +515,6 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
             return;
         }
 
-//        if (credito > monto) {
-//            JOptionPane.showMessageDialog(null, "El valor de crédito no puede ser mayor al monto");
-//            return;
-//        }
-//
-//        if (debito > monto) {
-//            JOptionPane.showMessageDialog(null, "El valor de débito no puede ser mayor al monto");
-//            return;
-//        }
-
         checkExist();
         
         
@@ -777,11 +767,11 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
       } catch (IOException e) {
           JOptionPane.showMessageDialog(null, "Error al leer el catálogo de cuentas");
       }
-      return "Cuenta no encontrada";  // Si no se encuentra la cuenta
+      return "Cuenta no encontrada"; 
    }
        
     public void checkExist() {
-        String numCuenta_u = txtCuenta.getText();  // Número de cuenta ingresado
+        String numCuenta_u = txtCuenta.getText(); 
         boolean find = false;
 
         File file = new File("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt");
@@ -799,7 +789,7 @@ public class Movimientodetrasaccion extends javax.swing.JFrame {
                 if (datos.length >= 11) {
                     String auxNumCuenta = datos[0]; 
                     if (numCuenta_u.equals(auxNumCuenta)) {
-                        find = true; // Cuenta encontrada
+                        find = true; 
 
                         String auxDescipcion = datos[1];
                         String auxtCuenta = datos[2];

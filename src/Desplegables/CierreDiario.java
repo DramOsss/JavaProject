@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -161,14 +162,21 @@ public class CierreDiario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void guardarbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarbtActionPerformed
-        if ( dateIn.getDate() == null ||  dateFn.getDate() == null ) 
-        throw new IllegalArgumentException("Las fechas no deben estar vacías.");
+        if ( dateIn.getDate() == null ||  dateFn.getDate() == null ){
+             JOptionPane.showMessageDialog(null, "Las fechas no deben estar vacías.");
+                return; }
+       
 
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         String fechaInicio = formato.format(dateIn.getDate());
         String fechaFinal = formato.format(dateFn.getDate());
         
-        
+        if (fechaInicio.compareTo(fechaFinal) > 0) {
+            JOptionPane.showMessageDialog(null, "La fecha de inicio no puede ser mayor que la fecha final.");
+            return;
+        }
+
+       
         
         realizarCierreDiario(fechaInicio, fechaFinal);
     }//GEN-LAST:event_guardarbtActionPerformed
@@ -182,6 +190,11 @@ public class CierreDiario extends javax.swing.JFrame {
             
             
             List<String[]> transaccionesDetalle = leerTransaccionesDetalle(fechaInicio, fechaFin);
+            
+            if (transaccionesDetalle.size() < 1) {
+                    JOptionPane.showMessageDialog(null, "No hay trasacciones en esta fecha");
+                    return; 
+                }
 
             // 3. Actualizar balances de cuentas en Catalogo_Cuentas.txt
             actualizarBalancesYPadres(transaccionesDetalle, fechaInicio, fechaFin);
@@ -201,40 +214,41 @@ public class CierreDiario extends javax.swing.JFrame {
 
     
 
-    // Leer las transacciones del archivo Transaccion_Contable.txt dentro del rango de fechas
-        private List<String[]> leerTransaccionesDetalle(String fechaInicio, String fechaFin) throws IOException {
-          // Leer cabeceras que coincidan con el rango de fechas
+    private List<String[]> leerTransaccionesDetalle(String fechaInicio, String fechaFin) throws IOException {
           BufferedReader cabeceraReader = new BufferedReader(new FileReader("C:\\Users\\admin\\Desktop\\Cabecera_Transaccion_Contable.txt"));
           String cabeceraLine;
           List<String> documentosEnRango = new ArrayList<>();
+         
 
            while ((cabeceraLine = cabeceraReader.readLine()) != null) {
             String[] camposCabecera = cabeceraLine.split(";");
-            String fechaTransaccion = camposCabecera[1]; // La fecha de la transacción está en el índice 1
-            String estado = camposCabecera[6]; // El estado de la transacción está en el índice 6
+            String fechaTransaccion = camposCabecera[1]; 
+            String estado = camposCabecera[6]; 
 
-            // Evaluar sólo si el estado no es "2"
             if (!estado.equals("2") && esFechaValida(fechaTransaccion, fechaInicio, fechaFin)) {
-                documentosEnRango.add(camposCabecera[0]); // Guardar el número de documento (índice 0)
+                documentosEnRango.add(camposCabecera[0]); 
             }
         }
         cabeceraReader.close();
 
-          // Leer transacciones asociadas a los documentos encontrados
           BufferedReader detalleReader = new BufferedReader(new FileReader("C:\\Users\\admin\\Desktop\\Transaccion_Contable.txt"));
           String detalleLine;
           List<String[]> transacciones = new ArrayList<>();
 
           while ((detalleLine = detalleReader.readLine()) != null) {
               String[] camposDetalle = detalleLine.split(";");
-              String numDocumento = camposDetalle[0]; // Número de documento en el índice 0
-
-              // Verificar si el documento pertenece a los documentos en rango
+              String numDocumento = camposDetalle[0]; 
+              
               if (documentosEnRango.contains(numDocumento)) {
                   transacciones.add(camposDetalle);
               }
           }
           detalleReader.close();
+          
+          if (transacciones.size() < 1) {
+                JOptionPane.showMessageDialog(null, "No hay transacciones en esta fecha");
+                return new ArrayList<>(); 
+          }
 
           return transacciones;
       }
@@ -265,44 +279,45 @@ public class CierreDiario extends javax.swing.JFrame {
         // Procesamos las transacciones
         for (String[] transaccion : transaccionesDetalle) {
             String cuentaContable = transaccion[1];  
+            String origenValue = transaccion[3];
             double debitoValue = Double.parseDouble(transaccion[4]);  
             double creditoValue = Double.parseDouble(transaccion[5]); 
 
-            // Verificamos si la cuenta contable existe en el catálogo
             if (cuentasMap.containsKey(cuentaContable)) {
-                // Actualizamos la cuenta y sus padres, registrando las cuentas afectadas
-                actualizarCuentasPadres(cuentaContable, cuentasMap, debitoValue, creditoValue, cuentasAfectadas);
+                actualizarCuentasPadres(cuentaContable, cuentasMap, origenValue , debitoValue, creditoValue, cuentasAfectadas);
             }
         }
 
-        // Escribimos solo las cuentas afectadas de nuevo en el archivo
         BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\admin\\Desktop\\Catalogo_Cuentas.txt"));
         for (String cuentaId : cuentasMap.keySet()) {
             String[] cuenta = cuentasMap.get(cuentaId);
             if (cuentasAfectadas.contains(cuentaId)) {
-                writer.write(String.join(";", cuenta)); // Escribir las cuentas afectadas con los cambios
+                writer.write(String.join(";", cuenta)); 
             } else {
-                writer.write(String.join(";", cuenta)); // Escribir las cuentas no modificadas tal cual
+                writer.write(String.join(";", cuenta)); 
             }
             writer.newLine();
         }
         writer.close();
     }
 
-    private void actualizarCuentasPadres(String cuentaContable, Map<String, String[]> cuentasMap, double debitoValue, double creditoValue, Set<String> cuentasAfectadas) {
-        // Obtenemos la cuenta actual del mapa
+    private void actualizarCuentasPadres(String cuentaContable, Map<String, String[]> cuentasMap, String origenValue, double debitoValue, double creditoValue, Set<String> cuentasAfectadas) {
         String[] cuenta = cuentasMap.get(cuentaContable);
-        String cuentaPadre = cuenta[4];  // La cuenta padre está en la posición 4
-
-        cuenta[9] = String.valueOf(Double.parseDouble(cuenta[9]) + debitoValue - creditoValue);  // Balance actual
-        cuenta[10] = String.valueOf(Double.parseDouble(cuenta[10]) + debitoValue);              // Débitos
-        cuenta[11] = String.valueOf(Double.parseDouble(cuenta[11]) + creditoValue);             // Créditos
+        String cuentaPadre = cuenta[4];
+        
+        if(origenValue.equals("Credito"))
+            cuenta[9] = String.valueOf(Double.parseDouble(cuenta[9]) + creditoValue); 
+        else 
+            cuenta[9] = String.valueOf(Double.parseDouble(cuenta[9]) + debitoValue); 
+        
+        cuenta[10] = String.valueOf(Double.parseDouble(cuenta[10]) + debitoValue);              
+        cuenta[11] = String.valueOf(Double.parseDouble(cuenta[11]) + creditoValue);             
 
         cuentasAfectadas.add(cuentaContable);
 
         if (!cuentaPadre.equals("0") && cuentasMap.containsKey(cuentaPadre)) {
             // Propagamos los valores acumulativos al padre
-            actualizarCuentasPadres(cuentaPadre, cuentasMap, debitoValue, creditoValue, cuentasAfectadas);
+            actualizarCuentasPadres(cuentaPadre, cuentasMap, origenValue, debitoValue, creditoValue, cuentasAfectadas);
         }
     }
 
@@ -333,7 +348,6 @@ public class CierreDiario extends javax.swing.JFrame {
         return java.time.LocalDate.now().toString();
     }
 
-    // Marcar el estado de actualización como True en Cabecera_Transaccion_Contable.txt
     private void marcarEstadoActualizacion() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\admin\\Desktop\\Cabecera_Transaccion_Contable.txt"));
         String line;
@@ -341,7 +355,7 @@ public class CierreDiario extends javax.swing.JFrame {
 
         while ((line = reader.readLine()) != null) {
             String[] campos = line.split(";");
-            campos[6] = "2";  // Establecer el estado como "True"
+            campos[6] = "2"; 
             updatedLines.add(String.join(";", campos));
         }
         reader.close();

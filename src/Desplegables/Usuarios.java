@@ -16,7 +16,6 @@ public class Usuarios extends javax.swing.JFrame {
     public static String Lantigua;
     public boolean Modificar = false;
     public int Nivel = 0;
-    public String nivel= "";
     public int v;
     private boolean mostrarContrasena = false;
   
@@ -160,7 +159,7 @@ public class Usuarios extends javax.swing.JFrame {
 
         accesolbl1.setText("Nivel de Acceso");
 
-        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Administrador" }));
+        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Normal" }));
 
         passwordlbl1.setText("Connfirm Password");
 
@@ -323,7 +322,7 @@ public class Usuarios extends javax.swing.JFrame {
     private void isProcess(boolean value){
          if (!value){
              jTextField1.setText("Creando");
-             txtpassword1.setVisible(true);
+            txtpassword1.setVisible(true);
             passwordlbl1.setVisible(true);
             seeButton1.setVisible(true);
          } else{
@@ -355,27 +354,28 @@ public class Usuarios extends javax.swing.JFrame {
         login = txtlogin.getText();
         pass = txtpassword.getText();
         pass1 = txtpassword1.getText();
-        
-        if (!pass.equals(pass1)) {  
-            JOptionPane.showMessageDialog(null, "No coinciden las contraseñas");
-            return;
-        }   
-            
         nombre = txtnombre.getText();
         apellido = txtapellidos.getText();
         email = txtemail.getText();
         comboGuardado=(String)comboBox.getSelectedItem();
         if(comboGuardado.equals("Normal")){
-            nivel="1";
+           Nivel = 1;
         }else if(comboGuardado.equals("Administrador")){
-            nivel="0";
+           Nivel = 0;
         }
-        usuario= login+";"+pass+";"+nivel+";"+nombre+";"+apellido+";"+email;
+        usuario= login+";"+pass+";"+ Nivel +";"+nombre+";"+apellido+";"+email;
         
         if (Modificar) {
             archivos.ModificarArchivo(Lantigua, usuario, file);
             JOptionPane.showMessageDialog(null, "Modificado exitosamente");
+            
         } else {
+            
+            if (!pass.equals(pass1)) {  
+            JOptionPane.showMessageDialog(null, "No coinciden las contraseñas");
+            return;
+            }  
+            
             archivos.Guardar(usuario, file);
             JOptionPane.showMessageDialog(null, "Guardado exitosamente");
         }
@@ -392,10 +392,6 @@ public class Usuarios extends javax.swing.JFrame {
         } else if (txtpassword.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "El campo de password no debe estar vacío");
             txtpassword.grabFocus();
-            return false;
-        } else if (txtpassword1.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El campo de confirmacion de password no debe estar vacío");
-            txtpassword1.grabFocus();
             return false;
         } else if (txtnombre.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "El nombre no debe estar vacío");
@@ -496,7 +492,6 @@ public class Usuarios extends javax.swing.JFrame {
                     String auxPass = newScan.next();
 
                     if (login_u.equals(auxlogin) && pass_u.equals(auxPass)) {
-                        // Login and password matched
                         Nivel = Integer.parseInt(newScan.next());
                         comboBox.setSelectedIndex(Nivel == 0 ? 0 : 1); // Set combobox index based on Nivel value
 
@@ -504,7 +499,7 @@ public class Usuarios extends javax.swing.JFrame {
                         txtapellidos.setText(newScan.next());
                         txtemail.setText(newScan.next());
 
-                        Lantigua = login_u + ";" + pass_u + ";" + txtnombre.getText() + ";" + txtapellidos.getText() + ";" + txtemail.getText();
+                        Lantigua = login_u + ";" + pass_u + ";" + Nivel + ";" +  txtnombre.getText() + ";" + txtapellidos.getText() + ";" + txtemail.getText();
                         Modificar = true;
                         isProcess(Modificar);
                         find = true;
